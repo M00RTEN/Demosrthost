@@ -3,265 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRT StreamHost | Professional Low Latency</title>
+    <title>SRT Cloud Stealth | Next-Gen Hosting</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
-            --secondary: #a855f7;
-            --bg: #0f172a;
-            --glass: rgba(30, 41, 59, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text: #f8fafc;
+            --primary: #8b5cf6;
+            --secondary: #06b6d4;
+            --bg: #030712;
+            --card: rgba(17, 24, 39, 0.8);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #f3f4f6;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            background-image: radial-gradient(circle at 50% -20%, #1e1b4b, #030712);
             color: var(--text);
             margin: 0;
-            min-height: 100vh;
-            scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
-        /* Navigasjon */
+        /* --- Navigasjon --- */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 10%;
-            backdrop-filter: blur(10px);
+            padding: 1rem 8%;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
         }
 
-        .logo { font-size: 1.5rem; font-weight: 800; background: linear-gradient(to right, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .nav-links { display: flex; gap: 2rem; align-items: center; }
-        
-        .lang-toggle {
-            border: 1px solid var(--primary);
-            background: transparent;
+        /* --- Hero / Landingsside --- */
+        .hero { text-align: center; padding: 120px 5%; animation: fadeIn 0.8s ease-out; }
+        .hero h1 { font-size: 4rem; margin-bottom: 1rem; line-height: 1; }
+        .hero p { color: #9ca3af; font-size: 1.25rem; max-width: 700px; margin: 0 auto 2.5rem; }
+
+        .btn-main {
+            background: var(--primary);
             color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .lang-toggle:hover { background: var(--primary); }
-
-        /* Hero Seksjon */
-        .hero {
-            text-align: center;
-            padding: 100px 10%;
-            animation: fadeIn 1s ease-in;
-        }
-
-        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; letter-spacing: -1px; }
-        .hero p { font-size: 1.2rem; color: #94a3b8; max-width: 600px; margin: 0 auto 2rem; }
-
-        /* Glass Cards */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; padding: 0 10%; }
-        
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 2.5rem;
-            transition: 0.4s;
-        }
-
-        .card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-
-        /* Dashboard spesifikt */
-        .data-list { list-style: none; padding: 0; }
-        .data-item {
-            background: rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .data-label { color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; }
-
-        /* Knapper */
-        .cta-btn {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            padding: 15px 40px;
-            border-radius: 12px;
+            padding: 16px 32px;
+            border-radius: 50px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 700;
+            transition: 0.3s;
             border: none;
             cursor: pointer;
-            font-size: 1rem;
-            display: inline-block;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
         }
 
-        .status-dot { height: 10px; width: 10px; background: #10b981; border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 10px #10b981; }
+        .btn-main:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(139, 92, 246, 0.6); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- Dashboard Layout --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
 
+        .glass-card {
+            background: var(--card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-badge {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* --- Bitrate Graf Animering --- */
+        .stats-box { margin-top: 20px; height: 100px; display: flex; align-items: flex-end; gap: 4px; }
+        .bar { width: 100%; background: var(--secondary); min-height: 10%; transition: height 0.5s ease; border-radius: 2px 2px 0 0; opacity: 0.7; }
+
+        /* --- Chat System --- */
+        .chat-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+        }
+
+        .chat-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 300px;
+            background: #1f2937;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .chat-header { background: var(--primary); padding: 15px; font-weight: bold; }
+        .chat-body { height: 250px; padding: 15px; font-size: 0.85rem; overflow-y: auto; background: #111827; }
+        .chat-footer { padding: 10px; display: flex; gap: 5px; }
+        .chat-footer input { flex: 1; background: #374151; border: none; padding: 8px; border-radius: 5px; color: white; }
+
+        /* --- Utils --- */
         .hidden { display: none; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .data-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
+        .label { color: #9ca3af; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo"><i class="fas fa-bolt"></i> SRT.HOST</div>
-    <div class="nav-links">
-        <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">English</button>
-        <a href="#" style="color: white; text-decoration: none;" id="navHome">Hjem</a>
+    <div class="logo">SRT.STEALTH</div>
+    <div style="display: flex; gap: 20px; align-items: center;">
+        <div id="langToggle" onclick="toggleLang()" style="cursor:pointer; font-size: 0.9rem;">EN | <b>NO</b></div>
+        <button class="btn-main" style="padding: 10px 20px; font-size: 0.8rem;" onclick="showPage('home')">Hjem</button>
     </div>
 </nav>
 
-<section id="homePage" class="hero">
-    <h1 id="heroTitle">Strøm uten forsinkelse.</h1>
-    <p id="heroSub">Profesjonell SRT og SRTLA hosting for gamere, kringkastere og studioer. Krystallklar kvalitet med global rekkevidde.</p>
+<section id="page-home" class="hero">
+    <h1 id="t-h1">Stream uten grenser.</h1>
+    <p id="t-p">Ultra-lav forsinkelse SRT & SRTLA hosting med 100% NVMe-drevne releer. Klar for studio-bruk på sekunder.</p>
     
-    <div class="grid">
-        <div class="card">
-            <h3 id="planTitle">Premium Plan</h3>
-            <h2 style="font-size: 3rem;">100 kr<span style="font-size: 1rem; color: #94a3b8;">/mnd</span></h2>
-            <p id="planIncludes">Inkluderer 25% mva (20 kr)</p>
-            <ul style="text-align: left; margin: 2rem 0; color: #cbd5e1;">
-                <li><i class="fas fa-check text-primary"></i> Ubegrenset båndbredde</li>
-                <li><i class="fas fa-check"></i> SRTLA Bonding Støtte</li>
-                <li><i class="fas fa-check"></i> 24/7 Support</li>
+    <div class="container">
+        <div class="glass-card" style="max-width: 400px; margin: 0 auto; border: 2px solid var(--primary);">
+            <h3>Premium Relé</h3>
+            <h2 style="font-size: 3rem; margin: 10px 0;">100 kr<span style="font-size: 1rem; color: #9ca3af;">/mnd</span></h2>
+            <p style="font-size: 0.8rem; color: #6b7280;">Ekskl. mva: 80 kr | Mva (25%): 20 kr</p>
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+            <ul style="text-align: left; list-style: none; padding: 0; margin-bottom: 30px;">
+                <li><i class="fas fa-check-circle" style="color:var(--secondary)"></i> Ubegrenset Ingress</li>
+                <li><i class="fas fa-check-circle" style="color:var(--secondary)"></i> SRTLA Bonding inkludert</li>
+                <li><i class="fas fa-check-circle" style="color:var(--secondary)"></i> Oslo / London / Frankfurt</li>
             </ul>
-            <button class="cta-btn" onclick="showSection('checkoutPage')" id="buyBtn">Start Nå</button>
-        </div>
-        
-        <div class="card" style="display: flex; flex-direction: column; justify-content: center;">
-            <div style="font-size: 3rem; color: var(--primary);"><i class="fas fa-server"></i></div>
-            <h3 id="statusTitle">System Status</h3>
-            <p><span class="status-dot"></span> <span id="statusText">Alle systemer operative</span></p>
-            <p style="font-size: 0.9rem; color: #94a3b8;">Uptime: 99.99%</p>
+            <button class="btn-main" style="width: 100%;" onclick="simulateOrder()">Bestill nå</button>
         </div>
     </div>
 </section>
 
-<section id="checkoutPage" class="hero hidden">
-    <h1 id="checkTitle">Fullfør Bestilling</h1>
-    <div class="card" style="max-width: 400px; margin: 0 auto; text-align: left;">
-        <label id="lEmail">E-post</label>
-        <input type="text" placeholder="bruker@eksempel.no" style="width:100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 12px; border-radius: 8px; color: white; margin: 10px 0 20px 0;">
-        
-        <label id="lPay">Betalingsmetode</label>
-        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin: 10px 0;">
-            <i class="fab fa-cc-visa"></i> **** **** **** 1234
-        </div>
-        
-        <button class="cta-btn" style="width: 100%;" onclick="simulateActivation()" id="payBtn">Betal 100 kr</button>
+<section id="page-dash" class="container hidden" style="animation: fadeIn 0.5s ease;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+        <h2>Kontrollpanel <span class="status-badge">Online</span></h2>
+        <button class="btn-main" style="background: #374151;" onclick="showPage('home')">Logg ut</button>
     </div>
-</section>
 
-<section id="dashPage" class="hero hidden">
-    <h1 id="dashTitle">Mitt Kontrollpanel</h1>
     <div class="grid">
-        <div class="card" style="text-align: left;">
-            <h3 id="confTitle">Konfigurasjon</h3>
-            <div class="data-list">
-                <div class="data-item">
-                    <span class="data-label">Publisher ID</span>
-                    <span class="value">pub_8829_live</span>
-                </div>
-                <div class="data-item">
-                    <span class="data-label">Player ID</span>
-                    <span class="value">play_3321_main</span>
-                </div>
-                <div class="data-item">
-                    <span class="data-label">Type</span>
-                    <span class="value">SRT / SRTLA</span>
-                </div>
+        <div class="glass-card">
+            <div style="display: flex; justify-content: space-between;">
+                <h3>Live Bitrate</h3>
+                <span id="bitrate-val" style="font-weight: bold; color: var(--secondary);">0.00 Mbps</span>
             </div>
+            <div class="stats-box" id="graph">
+                </div>
         </div>
 
-        <div class="card" style="text-align: left;">
-            <h3 id="urlTitle">Tilkobling</h3>
-            <div class="data-label" style="margin-bottom: 5px;">OBS / VLC URL</div>
-            <div style="background: #000; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 0.8rem; border: 1px dashed var(--primary); overflow-x: auto;">
-                srt://oslo-node.srt.host:10001?streamid=pub_8829_live
+        <div class="glass-card">
+            <h3>Server Detaljer</h3>
+            <div class="data-row"><span class="label">Publisher ID</span><span class="value">pub_alpha_772</span></div>
+            <div class="data-row"><span class="label">Player ID</span><span class="value">play_beta_991</span></div>
+            <div class="data-row"><span class="label">Type</span><span class="value">SRT / SRTLA</span></div>
+            <div class="data-row" style="border:none; flex-direction:column; gap:10px; margin-top:10px;">
+                <span class="label">OBS Connection URL</span>
+                <code style="background: #000; padding: 10px; border-radius: 5px; font-size: 0.8rem; color: var(--secondary);">srt://oslo.srt.stealth:10001?streamid=pub_alpha_772</code>
             </div>
-            
-            <div class="data-label" style="margin-top: 20px; margin-bottom: 5px;">Stats URL</div>
-            <div style="color: var(--primary); cursor: pointer;">https://stats.srt.host/8829</div>
         </div>
     </div>
-    
-    <div class="card" style="margin: 2rem 10%; text-align: left;">
-        <h4 id="gTitle"><i class="fas fa-lightbulb"></i> Lynrask Guide</h4>
-        <p id="gText" style="color: #94a3b8; font-size: 0.9rem;">
-            1. Åpne OBS -> Innstillinger -> Stream.<br>
-            2. Velg "Custom" og lim inn URL-en over.<br>
-            3. Hvis du bruker SRTLA (Bonding), bruk port 10002.
-        </p>
-    </div>
 </section>
+
+<div class="chat-widget">
+    <div class="chat-window" id="chatWin">
+        <div class="chat-header">Support Chat</div>
+        <div class="chat-body" id="chatBody">
+            <div style="background: #374151; padding: 8px; border-radius: 8px; margin-bottom: 10px; max-width: 80%;">
+                Hei! Jeg er din SRT-assistent. Hvordan kan jeg hjelpe deg i dag?
+            </div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" placeholder="Skriv melding..." id="chatInput">
+            <button onclick="sendMessage()" style="background: var(--primary); border:none; color:white; border-radius:5px; padding:0 10px;"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <div class="chat-btn" onclick="document.getElementById('chatWin').style.display = (document.getElementById('chatWin').style.display === 'flex') ? 'none' : 'flex'">
+        <i class="fas fa-comment-dots" style="font-size: 1.5rem;"></i>
+    </div>
+</div>
 
 <script>
+    // --- Sidehåndtering ---
+    function showPage(id) {
+        document.getElementById('page-home').classList.add('hidden');
+        document.getElementById('page-dash').classList.add('hidden');
+        document.getElementById('page-' + id).classList.remove('hidden');
+    }
+
+    function simulateOrder() {
+        alert("Betaling godkjent (Simulert). Aktiverer din SRT-node...");
+        setTimeout(() => { showPage('dash'); startBitrateSim(); }, 1000);
+    }
+
+    // --- Bitrate Simulator (Den geniale delen) ---
+    const graph = document.getElementById('graph');
+    for(let i=0; i<20; i++) {
+        let bar = document.createElement('div');
+        bar.className = 'bar';
+        graph.appendChild(bar);
+    }
+
+    function startBitrateSim() {
+        setInterval(() => {
+            const bars = document.querySelectorAll('.bar');
+            let total = 0;
+            bars.forEach(bar => {
+                const val = Math.floor(Math.random() * 80) + 10;
+                bar.style.height = val + '%';
+            });
+            document.getElementById('bitrate-val').innerText = (Math.random() * (6.8 - 5.2) + 5.2).toFixed(2) + " Mbps";
+        }, 800);
+    }
+
+    // --- Språk ---
     let lang = 'no';
-    
-    const content = {
-        no: {
-            heroT: "Strøm uten forsinkelse.",
-            heroS: "Profesjonell SRT og SRTLA hosting for gamere, kringkastere og studioer. Krystallklar kvalitet.",
-            buy: "Start Nå",
-            statusT: "System Status",
-            statusS: "Alle systemer operative",
-            pay: "Betal 100 kr",
-            dashT: "Mitt Kontrollpanel",
-            guideT: "Lynrask Guide",
-            navH: "Hjem"
-        },
-        en: {
-            heroT: "Stream without lag.",
-            heroS: "Professional SRT and SRTLA hosting for gamers, broadcasters, and studios. Crystal clear quality.",
-            buy: "Get Started",
-            statusT: "System Status",
-            statusS: "All systems operational",
-            pay: "Pay $10",
-            dashT: "My Dashboard",
-            guideT: "Quick Guide",
-            navH: "Home"
-        }
-    };
-
-    function toggleLanguage() {
+    function toggleLang() {
         lang = lang === 'no' ? 'en' : 'no';
-        document.getElementById('langBtn').innerText = lang === 'no' ? 'English' : 'Norsk';
-        document.getElementById('heroTitle').innerText = content[lang].heroT;
-        document.getElementById('heroSub').innerText = content[lang].heroS;
-        document.getElementById('buyBtn').innerText = content[lang].buy;
-        document.getElementById('statusTitle').innerText = content[lang].statusT;
-        document.getElementById('statusText').innerText = content[lang].statusS;
-        document.getElementById('payBtn').innerText = content[lang].pay;
-        document.getElementById('dashTitle').innerText = content[lang].dashT;
-        document.getElementById('gTitle').innerText = content[lang].guideT;
-        document.getElementById('navHome').innerText = content[lang].navH;
+        document.getElementById('t-h1').innerText = lang === 'no' ? "Stream uten grenser." : "Stream without limits.";
+        document.getElementById('t-p').innerText = lang === 'no' ? "Ultra-lav forsinkelse SRT & SRTLA hosting..." : "Ultra-low latency SRT & SRTLA hosting...";
+        document.getElementById('langToggle').innerHTML = lang === 'no' ? "EN | <b>NO</b>" : "<b>EN</b> | NO";
     }
 
-    function showSection(id) {
-        document.getElementById('homePage').classList.add('hidden');
-        document.getElementById('checkoutPage').classList.add('hidden');
-        document.getElementById('dashPage').classList.add('hidden');
-        document.getElementById(id).classList.remove('hidden');
-    }
-
-    function simulateActivation() {
-        let btn = document.getElementById('payBtn');
-        btn.innerText = "Aktiverer...";
-        btn.style.opacity = "0.5";
+    // --- Chat Funksjon ---
+    function sendMessage() {
+        const input = document.getElementById('chatInput');
+        if(!input.value) return;
         
+        const msg = document.createElement('div');
+        msg.style = "background: var(--primary); padding: 8px; border-radius: 8px; margin-bottom: 10px; max-width: 80%; align-self: flex-end; margin-left: auto;";
+        msg.innerText = input.value;
+        document.getElementById('chatBody').appendChild(msg);
+        
+        input.value = "";
         setTimeout(() => {
-            showSection('dashPage');
-        }, 1500);
+            const reply = document.createElement('div');
+            reply.style = "background: #374151; padding: 8px; border-radius: 8px; margin-bottom: 10px; max-width: 80%;";
+            reply.innerText = "En tekniker vil koble seg til snart. Din billett-ID er #SRT-992.";
+            document.getElementById('chatBody').appendChild(reply);
+        }, 1000);
     }
 </script>
 
