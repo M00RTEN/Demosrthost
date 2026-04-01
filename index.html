@@ -3,22 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRT.STEALTH | Professional IRL Hosting</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>SRT.STEALTH | Next-Gen IRL</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --bg: #050508;
-            --panel-bg: rgba(15, 15, 23, 0.8);
-            --accent-pink: #ec4899;
-            --accent-purple: #8b5cf6;
-            --primary: #6366f1;
-            --text-gray: #9ca3af;
-            --border: rgba(255, 255, 255, 0.1);
+            --bg: #030305;
+            --card-bg: rgba(15, 15, 25, 0.9);
+            --accent: #8b5cf6;
+            --accent-glow: rgba(139, 92, 246, 0.4);
+            --pink: #ec4899;
+            --green: #10b981;
+            --border: rgba(255, 255, 255, 0.08);
+            --text-dim: #94a3b8;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at top right, #13132e, #050508);
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.1) 0px, transparent 50%);
             color: white;
             margin: 0;
             min-height: 100vh;
@@ -29,289 +33,291 @@
         nav {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 1rem 8%;
-            backdrop-filter: blur(15px);
+            padding: 1.5rem 8%;
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            position: sticky; top: 0; z-index: 1000;
         }
 
-        .logo { font-size: 1.5rem; font-weight: 900; background: linear-gradient(to right, var(--accent-purple), var(--accent-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
+        .logo { font-size: 1.6rem; font-weight: 900; letter-spacing: -1px; background: linear-gradient(to right, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
 
-        /* --- Seksjoner --- */
-        .page { display: none; padding: 60px 8%; animation: fadeIn 0.5s ease-out; }
+        /* --- Pages --- */
+        .page { display: none; padding: 40px 8%; animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
         .page.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- Input Styles --- */
+        .input-group { margin-bottom: 1.5rem; }
+        .input-group label { display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; font-weight: 700; }
+        input {
+            width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+            padding: 14px; border-radius: 12px; color: white; font-size: 1rem; transition: 0.3s;
+        }
+        input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
 
-        /* --- Forside / Hero --- */
-        .hero { text-align: center; max-width: 800px; margin: 0 auto 50px; }
-        .hero h1 { font-size: 4rem; margin-bottom: 1.5rem; line-height: 1.1; font-weight: 800; }
-        .hero p { color: var(--text-gray); font-size: 1.25rem; margin-bottom: 2rem; }
+        .btn-action {
+            background: linear-gradient(135deg, var(--accent), var(--pink));
+            color: white; border: none; padding: 16px; border-radius: 12px;
+            font-weight: 800; cursor: pointer; width: 100%; font-size: 1rem; transition: 0.3s;
+        }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--accent-glow); }
 
-        /* --- Pris Kort --- */
-        .price-card {
-            background: var(--panel-bg);
-            backdrop-filter: blur(10px);
+        /* --- Modern Dashboard & IRL Details --- */
+        .section-box {
+            background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 24px;
-            padding: 40px;
-            text-align: center;
-            max-width: 400px;
-            margin: 0 auto;
-            transition: 0.3s;
-        }
-        .price-card:hover { border-color: var(--accent-purple); box-shadow: 0 0 40px rgba(139, 92, 246, 0.2); }
-
-        .btn-main {
-            background: linear-gradient(to right, var(--accent-purple), var(--accent-pink));
-            color: white; padding: 16px 32px; border-radius: 12px; border: none;
-            font-weight: bold; cursor: pointer; width: 100%; font-size: 1rem; margin-top: 20px;
-        }
-
-        /* --- Moderne Dashboard (Oppdatert utseende på bildet ditt) --- */
-        .dash-container { max-width: 1000px; margin: 0 auto; }
-        
-        .section-box {
-            background: var(--panel-bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
             margin-bottom: 30px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
         .section-header {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 20px;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 700;
+            padding: 20px 30px;
+            background: rgba(255,255,255,0.03);
             border-bottom: 1px solid var(--border);
-            letter-spacing: 1px;
-            color: var(--text-gray);
+            display: flex; justify-content: space-between; align-items: center;
         }
 
         .data-row {
-            display: grid;
-            grid-template-columns: 180px 1fr 100px;
-            padding: 18px 30px;
-            border-bottom: 1px solid var(--border);
-            align-items: center;
-            transition: background 0.2s;
+            display: grid; grid-template-columns: 180px 1fr 100px;
+            padding: 20px 30px; border-bottom: 1px solid var(--border); align-items: center;
         }
-        .data-row:hover { background: rgba(255,255,255,0.02); }
         .data-row:last-child { border-bottom: none; }
-        
-        .label { color: white; font-weight: 600; font-size: 0.9rem; }
-        .value { color: var(--accent-pink); font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; }
+        .label { color: var(--text-dim); font-size: 0.85rem; font-weight: 600; }
+        .value { font-family: 'JetBrains Mono', monospace; color: var(--pink); font-size: 0.95rem; }
 
         .copy-btn {
-            background: #1e1e2e;
-            color: white; border: 1px solid #3f3f46;
-            padding: 8px 15px; border-radius: 8px;
-            cursor: pointer; font-size: 0.75rem; font-weight: 600;
-            transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px;
+            background: #1e1e2e; color: white; border: 1px solid var(--border);
+            padding: 8px; border-radius: 8px; cursor: pointer; transition: 0.2s;
         }
-        .copy-btn:hover { background: var(--accent-purple); border-color: var(--accent-purple); }
+        .copy-btn:hover { background: var(--accent); color: white; }
 
-        /* --- Bitrate Graf --- */
-        .stats-area { padding: 30px; background: rgba(0,0,0,0.4); border-radius: 0 0 20px 20px; }
-        .bar-chart { display: flex; align-items: flex-end; gap: 4px; height: 80px; margin-top: 15px; }
-        .bar { flex: 1; background: var(--primary); min-height: 5px; border-radius: 3px; opacity: 0.6; transition: 0.3s; }
-
-        /* --- Chat & Support --- */
-        .chat-widget { position: fixed; bottom: 30px; right: 30px; z-index: 2000; }
-        .chat-btn {
-            width: 65px; height: 65px; background: var(--accent-purple);
-            border-radius: 50%; display: flex; justify-content: center;
-            align-items: center; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: 0.3s;
+        /* --- HELT NY STREAM HEALTH --- */
+        .health-grid {
+            display: grid; grid-template-columns: 2fr 1fr; gap: 20px; padding: 30px;
         }
-        .chat-btn:hover { transform: scale(1.1); background: var(--accent-pink); }
 
-        .warning-footer { color: #52525b; font-size: 0.75rem; text-align: center; padding: 20px; text-decoration: underline; cursor: help; }
+        .main-viz {
+            background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px;
+            position: relative; height: 150px; overflow: hidden;
+        }
 
-        .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 0.9rem; padding: 10px 20px; border-radius: 10px; transition: 0.2s; }
-        .nav-link:hover { background: rgba(255,255,255,0.1); }
+        .pulse-line {
+            width: 100%; height: 2px; background: var(--accent);
+            position: absolute; top: 50%; left: 0;
+            box-shadow: 0 0 20px var(--accent);
+            animation: pulseAnim 2s infinite linear;
+        }
+
+        @keyframes pulseAnim {
+            0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; }
+        }
+
+        .health-metric {
+            text-align: center; padding: 15px; background: rgba(255,255,255,0.02);
+            border-radius: 12px; border: 1px solid var(--border);
+        }
+
+        .metric-val { font-size: 1.5rem; font-weight: 900; color: var(--green); display: block; }
+        .metric-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; }
+
+        /* --- Footer Warn --- */
+        .warning-footer { color: #475569; font-size: 0.7rem; text-align: center; padding: 20px; border-top: 1px solid var(--border); }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo" onclick="showPage('landing')">SRT.STEALTH</div>
-    <div style="display: flex; gap: 10px;">
-        <a href="#" class="nav-link" onclick="showPage('landing')" id="navHome">Hjem</a>
-        <a href="#" class="nav-link" onclick="toggleLang()" id="langBtn">English</a>
-        <a href="#" class="nav-link" style="border: 1px solid var(--accent-purple);" onclick="alert('Support chat åpnes...')">Support</a>
+    <div class="logo" onclick="location.reload()">SRT.STEALTH</div>
+    <div id="nav-info" style="display:none; font-size: 0.9rem; color: var(--text-dim);">
+        Bruker: <span id="display-user" style="color: white; font-weight: bold;">-</span>
     </div>
 </nav>
 
-<section id="landing" class="page active">
-    <div class="hero">
-        <h1 id="h-title">Fremtidens IRL-streaming er her.</h1>
-        <p id="h-sub">Krystallklar kvalitet, null forsinkelse og 100% stabilitet med SRTLA bonding. Designet for de tøffeste forholdene.</p>
-    </div>
-
-    <div class="price-card">
-        <h3 id="p-plan">Pro IRL Node</h3>
-        <h2 style="font-size: 3.5rem; margin: 15px 0;">100 kr<span style="font-size: 1.2rem; color: var(--text-gray);">/mnd</span></h2>
-        <p id="p-tax" style="color: var(--text-gray); font-size: 0.85rem;">Inkl. 20 kr mva</p>
-        <ul style="text-align: left; list-style: none; padding: 0; margin: 30px 0; color: #cbd5e1; line-height: 2;">
-            <li><i class="fas fa-check-circle" style="color: var(--accent-purple); margin-right: 10px;"></i> Ubegrenset dataoverføring</li>
-            <li><i class="fas fa-check-circle" style="color: var(--accent-purple); margin-right: 10px;"></i> SRT & SRTLA Støtte</li>
-            <li><i class="fas fa-check-circle" style="color: var(--accent-purple); margin-right: 10px;"></i> Live Bitrate-statistikk</li>
-        </ul>
-        <button class="btn-main" onclick="showPage('checkout')" id="b-buy">Kom i gang nå</button>
+<section id="page-login" class="page active">
+    <div style="max-width: 450px; margin: 0 auto; text-align: center;">
+        <h1 style="font-size: 3rem; margin-bottom: 10px;">Logg inn</h1>
+        <p style="color: var(--text-dim); margin-bottom: 40px;">Sett opp din profesjonelle IRL-node på under 1 minutt.</p>
+        
+        <div class="section-box" style="padding: 30px; text-align: left;">
+            <div class="input-group">
+                <label>E-post</label>
+                <input type="email" placeholder="navn@epost.no">
+            </div>
+            <div class="input-group">
+                <label>Ønsket Brukernavn (for URL-er)</label>
+                <input type="text" id="username" placeholder="f.eks: kris_live">
+            </div>
+            <div class="input-group">
+                <label>Passord</label>
+                <input type="password" placeholder="••••••••">
+            </div>
+            <button class="btn-action" onclick="goToCheckout()">Fortsett til betaling (100 kr)</button>
+        </div>
     </div>
 </section>
 
-<section id="checkout" class="page">
-    <div class="hero">
-        <h2 id="c-title">Fullfør din bestilling</h2>
-    </div>
-    <div class="price-card" style="text-align: left; max-width: 450px;">
-        <label style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-gray);">Brukerkonto</label>
-        <input type="text" placeholder="E-postadresse" style="width:100%; background: #000; border: 1px solid var(--border); padding: 12px; border-radius: 8px; color: white; margin: 10px 0 20px 0;">
-        
-        <label style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-gray);">Betaling via Stripe / Vipps</label>
-        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-top: 10px; border: 1px solid var(--border);">
-            <i class="fab fa-cc-stripe"></i> **** **** **** 4242
+<section id="page-checkout" class="page">
+    <div style="max-width: 450px; margin: 0 auto;">
+        <h2 style="text-align: center; margin-bottom: 30px;">Fullfør aktivering</h2>
+        <div class="section-box" style="padding: 30px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                <span>SRT Pro Plan (Månedlig)</span>
+                <span style="font-weight: bold;">100,00 kr</span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-dim);">Inkluderer mva (20,00 kr). Din server aktiveres umiddelbart etter betaling.</p>
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+            <button class="btn-action" onclick="activateServer()">Betal og Aktiver</button>
         </div>
-        
-        <button class="btn-main" onclick="simulatePayment()" id="b-pay">Betal og Aktiver</button>
-        <p style="font-size: 0.7rem; color: var(--text-gray); text-align: center; margin-top: 15px;">Ved å klikke godtar du våre vilkår for tjenesten.</p>
     </div>
 </section>
 
-<section id="dash" class="page">
-    <div class="dash-container">
+<section id="page-dash" class="page" style="max-width: 1000px; margin: 0 auto;">
+    
+    <div class="section-box">
+        <div class="section-header">
+            <span>IRL Server Details</span>
+            <span style="color: var(--green); font-size: 0.8rem;"><i class="fas fa-circle"></i> SYSTEM ONLINE</span>
+        </div>
         
-        <div class="section-box">
-            <div class="section-header" id="d-main-title">IRL Server Details</div>
+        <div class="data-row">
+            <div class="label">Publisher ID</div>
+            <div class="value" id="val-pub">pub_user_main</div>
+            <button class="copy-btn" onclick="copy('val-pub')"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="data-row">
+            <div class="label">Player ID</div>
+            <div class="value" id="val-play">play_user_view</div>
+            <button class="copy-btn" onclick="copy('val-play')"><i class="fas fa-copy"></i></button>
         </div>
 
-        <div class="section-box">
-            <div class="section-header" id="d-id-title">Stream Identifiers</div>
-            <div class="data-row">
-                <div class="label">Publisher ID</div>
-                <div class="value">pub_stealth_8821_live</div>
-                <button class="copy-btn" onclick="copy('pub_stealth_8821_live')"><i class="fas fa-copy"></i> Copy</button>
-            </div>
-            <div class="data-row">
-                <div class="label">Player ID</div>
-                <div class="value">play_stealth_4432_view</div>
-                <button class="copy-btn" onclick="copy('play_stealth_4432_view')"><i class="fas fa-copy"></i> Copy</button>
-            </div>
+        <div class="data-row">
+            <div class="label">SRT Endpoint</div>
+            <div class="value" id="val-srt">srt://oslo.srt.stealth:10001</div>
+            <button class="copy-btn" onclick="copy('val-srt')"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="data-row">
+            <div class="label">OBS/VLC URL</div>
+            <div class="value" id="val-obs">srt://oslo.srt.stealth:10001?streamid=...</div>
+            <button class="copy-btn" onclick="copy('val-obs')"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="data-row">
+            <div class="label">Stats URL</div>
+            <div class="value" id="val-stats">https://stats.srt.stealth/user</div>
+            <button class="copy-btn" onclick="copy('val-stats')"><i class="fas fa-copy"></i></button>
         </div>
 
-        <div class="section-box">
-            <div class="section-header" id="d-url-title">Connection URLs</div>
-            <div class="data-row">
-                <div class="label">SRT</div>
-                <div class="value">srt://oslo-node.srt.stealth:10001</div>
-                <button class="copy-btn" onclick="copy('srt://oslo-node.srt.stealth:10001')"><i class="fas fa-copy"></i> Copy</button>
-            </div>
-            <div class="data-row">
-                <div class="label">SRTLA</div>
-                <div class="value">srtla://oslo-node.srt.stealth:10002</div>
-                <button class="copy-btn" onclick="copy('srtla://oslo-node.srt.stealth:10002')"><i class="fas fa-copy"></i> Copy</button>
-            </div>
-            <div class="data-row">
-                <div class="label">OBS/VLC URL:</div>
-                <div class="value">srt://oslo.stealth:10001?streamid=pub_stealth_8821_live</div>
-                <button class="copy-btn" onclick="copy('srt://oslo.stealth:10001?streamid=pub_stealth_8821_live')"><i class="fas fa-copy"></i> Copy</button>
-            </div>
-            <div class="data-row">
-                <div class="label">Stats URL</div>
-                <div class="value">https://stats.srt.stealth/live/8821</div>
-                <button class="copy-btn" onclick="window.open('#')"><i class="fas fa-external-link-alt"></i> Open</button>
-            </div>
+        <div class="warning-footer">
+            ADVARSEL: Ikke del disse nøklene. De gir hvem som helst tilgang til å streame på din konto.
+        </div>
+    </div>
 
-            <div class="stats-area">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span class="label" style="color: var(--accent-purple); font-size: 1rem;"><i class="fas fa-signal"></i> Real-time Bitrate</span>
-                    <span id="br-val" class="value" style="color: white; font-size: 1.2rem;">0.00 Mbps</span>
+    <h3 style="margin-left: 10px; font-size: 1rem; color: var(--text-dim); text-transform: uppercase;">Stream Health Engine</h3>
+    <div class="section-box">
+        <div class="health-grid">
+            <div class="main-viz">
+                <div style="display: flex; justify-content: space-between; position: relative; z-index: 2;">
+                    <div>
+                        <span style="font-size: 0.7rem; color: var(--text-dim);">LIVE BITRATE</span>
+                        <div id="bitrate-live" style="font-size: 1.8rem; font-weight: 900; color: var(--accent);">5.82 Mbps</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-size: 0.7rem; color: var(--text-dim);">NETWORK MODE</span>
+                        <div style="color: white; font-weight: bold;">SRTLA (Bonded)</div>
+                    </div>
                 </div>
-                <div class="bar-chart" id="chart"></div>
+                <div class="pulse-line"></div>
+                <canvas id="pulseCanvas" style="position:absolute; bottom:0; left:0; width:100%; height:80px; opacity: 0.4;"></canvas>
             </div>
-
-            <div class="warning-footer" id="d-warn">
-                Dont share these keys/urls, anyone with your keys/urls can publish or play your stream!
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="health-metric">
+                    <span class="metric-val">0%</span>
+                    <span class="metric-label">Dropped Frames</span>
+                </div>
+                <div class="health-metric">
+                    <span class="metric-val" id="jitter-val">12ms</span>
+                    <span class="metric-label">Jitter</span>
+                </div>
+                <div class="health-metric" style="grid-column: span 2;">
+                    <span class="metric-val" style="color: var(--accent);">STABLE</span>
+                    <span class="metric-label">Signal Integrity</span>
+                </div>
             </div>
         </div>
-
+        <div style="padding: 15px 30px; background: rgba(0,0,0,0.2); font-size: 0.75rem; font-family: monospace; color: #64748b;">
+            <i class="fas fa-terminal"></i> [LOG] <span id="log-msg">Henter livedata fra Oslo-Node-1...</span>
+        </div>
     </div>
 </section>
-
-<div class="chat-widget">
-    <div class="chat-btn" onclick="alert('Teknisk support er tilgjengelig 24/7. Chat starter nå...')">
-        <i class="fas fa-headset fa-lg" style="color: white;"></i>
-    </div>
-</div>
 
 <script>
-    // --- Navigasjon ---
+    let user = "";
+
     function showPage(id) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
+        document.getElementById('page-' + id).classList.add('active');
         window.scrollTo(0,0);
     }
 
-    // --- Språkvelger ---
-    let lang = 'no';
-    function toggleLang() {
-        lang = lang === 'no' ? 'en' : 'no';
-        document.getElementById('langBtn').innerText = lang === 'no' ? 'English' : 'Norsk';
-        // Her kan du utvide med mer tekst-oversettelse hvis ønskelig
+    function goToCheckout() {
+        user = document.getElementById('username').value || "user";
+        showPage('checkout');
     }
 
-    // --- Kopi-funksjon ---
-    function copy(text) {
+    function activateServer() {
+        // Generer URLer basert på brukernavn
+        document.getElementById('display-user').innerText = user;
+        document.getElementById('nav-info').style.display = 'block';
+        
+        document.getElementById('val-pub').innerText = `pub_${user}_main`;
+        document.getElementById('val-play').innerText = `play_${user}_view`;
+        document.getElementById('val-obs').innerText = `srt://oslo.srt.stealth:10001?streamid=pub_${user}_main`;
+        document.getElementById('val-stats').innerText = `https://stats.srt.stealth/${user}`;
+        
+        showPage('dash');
+        startHealthEngine();
+    }
+
+    function copy(id) {
+        const text = document.getElementById(id).innerText;
         navigator.clipboard.writeText(text);
-        const notification = document.createElement('div');
-        notification.style = "position: fixed; top: 20px; right: 20px; background: var(--accent-purple); padding: 15px 25px; border-radius: 10px; z-index: 3000; box-shadow: 0 5px 15px rgba(0,0,0,0.5);";
-        notification.innerText = "✓ Kopiert til utklippstavle";
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 2000);
+        alert("Kopiert!");
     }
 
-    // --- Betalings-simulering ---
-    function simulatePayment() {
-        const btn = document.getElementById('b-pay');
-        btn.innerText = "Prosesserer...";
-        btn.disabled = true;
-        setTimeout(() => {
-            alert("Takk! Din server er nå aktivert.");
-            showPage('dash');
-            startStats();
-        }, 1500);
-    }
+    // --- Stream Health Animering ---
+    function startHealthEngine() {
+        const canvas = document.getElementById('pulseCanvas');
+        const ctx = canvas.getContext('2d');
+        let x = 0;
 
-    // --- Bitrate Simulator ---
-    function startStats() {
-        const chart = document.getElementById('chart');
-        chart.innerHTML = '';
-        for(let i=0; i<40; i++) {
-            const bar = document.createElement('div');
-            bar.className = 'bar';
-            chart.appendChild(bar);
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.strokeStyle = '#8b5cf6';
+            ctx.lineWidth = 2;
+            ctx.moveTo(0, 40);
+            
+            for(let i=0; i<canvas.width; i++) {
+                ctx.lineTo(i, 40 + Math.sin(i * 0.05 + x) * 20 * Math.random());
+            }
+            ctx.stroke();
+            x += 0.1;
+            requestAnimationFrame(draw);
         }
+        draw();
 
+        // Dynamiske tall
         setInterval(() => {
-            const bars = document.querySelectorAll('.bar');
-            bars.forEach(bar => {
-                bar.style.height = Math.floor(Math.random() * 70 + 5) + '%';
-                bar.style.opacity = Math.random() * 0.5 + 0.3;
-            });
-            document.getElementById('br-val').innerText = (Math.random() * 3 + 4.5).toFixed(2) + " Mbps";
-        }, 600);
+            const br = (Math.random() * 2 + 4).toFixed(2);
+            document.getElementById('bitrate-live').innerText = br + " Mbps";
+            document.getElementById('jitter-val').innerText = Math.floor(Math.random() * 15 + 5) + "ms";
+            
+            const msgs = ["Pakker mottatt OK", "Buffer: 250ms", "Synkronisert", "Ingen pakketap"];
+            document.getElementById('log-msg').innerText = msgs[Math.floor(Math.random() * msgs.length)];
+        }, 1000);
     }
-
-    // Start stats automatisk hvis man går rett til dash for demo
-    // startStats(); 
 </script>
 
 </body>
