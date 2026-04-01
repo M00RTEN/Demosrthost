@@ -26,104 +26,50 @@
             color: white;
             margin: 0;
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
         /* --- Navigasjon --- */
         nav {
-            display: flex;
-            justify-content: space-between;
-            padding: 1.5rem 8%;
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; padding: 1.5rem 8%;
+            backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
             position: sticky; top: 0; z-index: 1000;
         }
 
-        .logo { font-size: 1.6rem; font-weight: 900; letter-spacing: -1px; background: linear-gradient(to right, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
+        .logo { font-size: 1.6rem; font-weight: 900; background: linear-gradient(to right, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
 
         /* --- Pages --- */
-        .page { display: none; padding: 40px 8%; animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .page { display: none; padding: 40px 8%; animation: slideUp 0.5s ease; }
         .page.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- Input Styles --- */
-        .input-group { margin-bottom: 1.5rem; }
-        .input-group label { display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; font-weight: 700; }
-        input {
-            width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
-            padding: 14px; border-radius: 12px; color: white; font-size: 1rem; transition: 0.3s;
-        }
-        input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+        /* --- Prisvelger (Ny) --- */
+        .plan-selector { display: flex; gap: 10px; margin-bottom: 25px; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 12px; border: 1px solid var(--border); }
+        .plan-opt { flex: 1; padding: 12px; border-radius: 8px; cursor: pointer; text-align: center; font-size: 0.85rem; transition: 0.3s; font-weight: 600; color: var(--text-dim); }
+        .plan-opt.active { background: var(--accent); color: white; box-shadow: 0 4px 15px var(--accent-glow); }
+        .discount-tag { font-size: 0.7rem; display: block; color: var(--green); }
 
-        .btn-action {
-            background: linear-gradient(135deg, var(--accent), var(--pink));
-            color: white; border: none; padding: 16px; border-radius: 12px;
-            font-weight: 800; cursor: pointer; width: 100%; font-size: 1rem; transition: 0.3s;
-        }
-        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--accent-glow); }
-
-        /* --- Modern Dashboard & IRL Details --- */
-        .section-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            margin-bottom: 30px;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-
-        .section-header {
-            padding: 20px 30px;
-            background: rgba(255,255,255,0.03);
-            border-bottom: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center;
-        }
-
-        .data-row {
-            display: grid; grid-template-columns: 180px 1fr 100px;
-            padding: 20px 30px; border-bottom: 1px solid var(--border); align-items: center;
-        }
-        .data-row:last-child { border-bottom: none; }
+        /* --- Dashboard --- */
+        .section-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; margin-bottom: 30px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .section-header { padding: 20px 30px; background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .data-row { display: grid; grid-template-columns: 180px 1fr 60px; padding: 20px 30px; border-bottom: 1px solid var(--border); align-items: center; }
         .label { color: var(--text-dim); font-size: 0.85rem; font-weight: 600; }
         .value { font-family: 'JetBrains Mono', monospace; color: var(--pink); font-size: 0.95rem; }
 
-        .copy-btn {
-            background: #1e1e2e; color: white; border: 1px solid var(--border);
-            padding: 8px; border-radius: 8px; cursor: pointer; transition: 0.2s;
-        }
-        .copy-btn:hover { background: var(--accent); color: white; }
+        .btn-action { background: linear-gradient(135deg, var(--accent), var(--pink)); color: white; border: none; padding: 18px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; transition: 0.3s; }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--accent-glow); }
+        
+        .copy-btn { background: #1e1e2e; color: white; border: 1px solid var(--border); padding: 8px; border-radius: 8px; cursor: pointer; }
 
-        /* --- HELT NY STREAM HEALTH --- */
-        .health-grid {
-            display: grid; grid-template-columns: 2fr 1fr; gap: 20px; padding: 30px;
-        }
+        /* --- Stream Health --- */
+        .health-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; padding: 30px; }
+        .main-viz { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px; position: relative; height: 140px; overflow: hidden; }
+        .pulse-line { width: 100%; height: 2px; background: var(--accent); position: absolute; top: 50%; left: 0; box-shadow: 0 0 20px var(--accent); animation: pulseAnim 2s infinite linear; }
+        .metric-box { text-align: center; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid var(--border); }
+        .metric-val { font-size: 1.4rem; font-weight: 900; color: var(--green); display: block; }
+        
+        @keyframes pulseAnim { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        .main-viz {
-            background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px;
-            position: relative; height: 150px; overflow: hidden;
-        }
-
-        .pulse-line {
-            width: 100%; height: 2px; background: var(--accent);
-            position: absolute; top: 50%; left: 0;
-            box-shadow: 0 0 20px var(--accent);
-            animation: pulseAnim 2s infinite linear;
-        }
-
-        @keyframes pulseAnim {
-            0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; }
-        }
-
-        .health-metric {
-            text-align: center; padding: 15px; background: rgba(255,255,255,0.02);
-            border-radius: 12px; border: 1px solid var(--border);
-        }
-
-        .metric-val { font-size: 1.5rem; font-weight: 900; color: var(--green); display: block; }
-        .metric-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; }
-
-        /* --- Footer Warn --- */
-        .warning-footer { color: #475569; font-size: 0.7rem; text-align: center; padding: 20px; border-top: 1px solid var(--border); }
+        input { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border); padding: 14px; border-radius: 12px; color: white; box-sizing: border-box; margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -136,189 +82,161 @@
 </nav>
 
 <section id="page-login" class="page active">
-    <div style="max-width: 450px; margin: 0 auto; text-align: center;">
-        <h1 style="font-size: 3rem; margin-bottom: 10px;">Logg inn</h1>
-        <p style="color: var(--text-dim); margin-bottom: 40px;">Sett opp din profesjonelle IRL-node på under 1 minutt.</p>
+    <div style="max-width: 480px; margin: 0 auto; text-align: center;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 10px;">Opprett din Node</h1>
+        <p style="color: var(--text-dim); margin-bottom: 40px;">Velg plan og brukernavn for din SRT-tunnel.</p>
         
         <div class="section-box" style="padding: 30px; text-align: left;">
-            <div class="input-group">
-                <label>E-post</label>
-                <input type="email" placeholder="navn@epost.no">
+            <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px; display: block;">VELG ABONNEMENT</label>
+            <div class="plan-selector">
+                <div class="plan-opt active" onclick="setPlan(1, 100, 0)" id="opt-1">
+                    1 MND
+                    <span style="display:block; font-size: 1.1rem;">100 kr</span>
+                </div>
+                <div class="plan-opt" onclick="setPlan(6, 540, 60)" id="opt-6">
+                    6 MND
+                    <span style="display:block; font-size: 1.1rem;">540 kr</span>
+                    <span class="discount-tag">Spar 60 kr</span>
+                </div>
+                <div class="plan-opt" onclick="setPlan(12, 960, 240)" id="opt-12">
+                    1 ÅR
+                    <span style="display:block; font-size: 1.1rem;">960 kr</span>
+                    <span class="discount-tag">Spar 240 kr</span>
+                </div>
             </div>
-            <div class="input-group">
-                <label>Ønsket Brukernavn (for URL-er)</label>
-                <input type="text" id="username" placeholder="f.eks: kris_live">
-            </div>
-            <div class="input-group">
-                <label>Passord</label>
-                <input type="password" placeholder="••••••••">
-            </div>
-            <button class="btn-action" onclick="goToCheckout()">Fortsett til betaling (100 kr)</button>
+
+            <input type="text" id="username" placeholder="Ønsket brukernavn (f.eks kris_live)">
+            <input type="email" placeholder="Din e-post">
+            <input type="password" placeholder="Passord">
+            
+            <button class="btn-action" onclick="goToCheckout()">Gå til betaling</button>
         </div>
     </div>
 </section>
 
 <section id="page-checkout" class="page">
     <div style="max-width: 450px; margin: 0 auto;">
-        <h2 style="text-align: center; margin-bottom: 30px;">Fullfør aktivering</h2>
+        <h2 style="text-align: center; margin-bottom: 30px;">Oppsummering</h2>
         <div class="section-box" style="padding: 30px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                <span>SRT Pro Plan (Månedlig)</span>
-                <span style="font-weight: bold;">100,00 kr</span>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span id="summary-name">SRT Pro - 1 mnd</span>
+                <span id="summary-total" style="font-weight: bold;">100,00 kr</span>
             </div>
-            <p style="font-size: 0.8rem; color: var(--text-dim);">Inkluderer mva (20,00 kr). Din server aktiveres umiddelbart etter betaling.</p>
-            <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
-            <button class="btn-action" onclick="activateServer()">Betal og Aktiver</button>
+            <div id="savings-box" style="display:none; color: var(--green); font-size: 0.85rem; margin-bottom: 15px;">
+                <i class="fas fa-gift"></i> Du sparer <span id="summary-save">0</span> kr på denne pakken!
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-dim); border-top: 1px solid var(--border); pt-15; margin-top:15px; padding-top:15px;">
+                Spesifikasjon:<br>
+                Netto: <span id="calc-netto">80,00</span> kr<br>
+                Moms (25%): <span id="calc-mva">20,00</span> kr
+            </div>
+            <button class="btn-action" style="margin-top:25px;" onclick="activateServer()">Bekreft og betal</button>
         </div>
     </div>
 </section>
 
 <section id="page-dash" class="page" style="max-width: 1000px; margin: 0 auto;">
-    
     <div class="section-box">
         <div class="section-header">
             <span>IRL Server Details</span>
             <span style="color: var(--green); font-size: 0.8rem;"><i class="fas fa-circle"></i> SYSTEM ONLINE</span>
         </div>
         
-        <div class="data-row">
-            <div class="label">Publisher ID</div>
-            <div class="value" id="val-pub">pub_user_main</div>
-            <button class="copy-btn" onclick="copy('val-pub')"><i class="fas fa-copy"></i></button>
-        </div>
-        <div class="data-row">
-            <div class="label">Player ID</div>
-            <div class="value" id="val-play">play_user_view</div>
-            <button class="copy-btn" onclick="copy('val-play')"><i class="fas fa-copy"></i></button>
-        </div>
-
-        <div class="data-row">
-            <div class="label">SRT Endpoint</div>
-            <div class="value" id="val-srt">srt://oslo.srt.stealth:10001</div>
-            <button class="copy-btn" onclick="copy('val-srt')"><i class="fas fa-copy"></i></button>
-        </div>
-        <div class="data-row">
-            <div class="label">OBS/VLC URL</div>
-            <div class="value" id="val-obs">srt://oslo.srt.stealth:10001?streamid=...</div>
-            <button class="copy-btn" onclick="copy('val-obs')"><i class="fas fa-copy"></i></button>
-        </div>
-        <div class="data-row">
-            <div class="label">Stats URL</div>
-            <div class="value" id="val-stats">https://stats.srt.stealth/user</div>
-            <button class="copy-btn" onclick="copy('val-stats')"><i class="fas fa-copy"></i></button>
-        </div>
-
-        <div class="warning-footer">
-            ADVARSEL: Ikke del disse nøklene. De gir hvem som helst tilgang til å streame på din konto.
-        </div>
+        <div class="data-row"><div class="label">Publisher ID</div><div class="value" id="val-pub"></div><button class="copy-btn" onclick="copy('val-pub')"><i class="fas fa-copy"></i></button></div>
+        <div class="data-row"><div class="label">Player ID</div><div class="value" id="val-play"></div><button class="copy-btn" onclick="copy('val-play')"><i class="fas fa-copy"></i></button></div>
+        <div class="data-row"><div class="label">SRT Endpoint</div><div class="value" id="val-srt">srt://oslo.srt.stealth:10001</div><button class="copy-btn" onclick="copy('val-srt')"><i class="fas fa-copy"></i></button></div>
+        <div class="data-row"><div class="label">OBS URL</div><div class="value" id="val-obs"></div><button class="copy-btn" onclick="copy('val-obs')"><i class="fas fa-copy"></i></button></div>
+        <div class="data-row"><div class="label">Stats URL</div><div class="value" id="val-stats"></div><button class="copy-btn" onclick="copy('val-stats')"><i class="fas fa-copy"></i></button></div>
     </div>
 
-    <h3 style="margin-left: 10px; font-size: 1rem; color: var(--text-dim); text-transform: uppercase;">Stream Health Engine</h3>
+    <h3 style="font-size: 0.9rem; color: var(--text-dim); margin-left: 10px;">STREAM HEALTH ENGINE</h3>
     <div class="section-box">
         <div class="health-grid">
             <div class="main-viz">
                 <div style="display: flex; justify-content: space-between; position: relative; z-index: 2;">
-                    <div>
-                        <span style="font-size: 0.7rem; color: var(--text-dim);">LIVE BITRATE</span>
-                        <div id="bitrate-live" style="font-size: 1.8rem; font-weight: 900; color: var(--accent);">5.82 Mbps</div>
-                    </div>
-                    <div style="text-align: right;">
-                        <span style="font-size: 0.7rem; color: var(--text-dim);">NETWORK MODE</span>
-                        <div style="color: white; font-weight: bold;">SRTLA (Bonded)</div>
-                    </div>
+                    <div><span style="font-size: 0.6rem; color: var(--text-dim);">BITRATE</span><div id="br-live" style="font-size: 1.5rem; font-weight: 900; color: var(--accent);">5.20 Mbps</div></div>
+                    <div style="text-align: right;"><span style="font-size: 0.6rem; color: var(--text-dim);">MODE</span><div style="font-weight: bold;">SRTLA Bonded</div></div>
                 </div>
                 <div class="pulse-line"></div>
-                <canvas id="pulseCanvas" style="position:absolute; bottom:0; left:0; width:100%; height:80px; opacity: 0.4;"></canvas>
+                <canvas id="pulseCanvas" style="position:absolute; bottom:0; left:0; width:100%; height:80px; opacity: 0.3;"></canvas>
             </div>
-            
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div class="health-metric">
-                    <span class="metric-val">0%</span>
-                    <span class="metric-label">Dropped Frames</span>
-                </div>
-                <div class="health-metric">
-                    <span class="metric-val" id="jitter-val">12ms</span>
-                    <span class="metric-label">Jitter</span>
-                </div>
-                <div class="health-metric" style="grid-column: span 2;">
-                    <span class="metric-val" style="color: var(--accent);">STABLE</span>
-                    <span class="metric-label">Signal Integrity</span>
-                </div>
+                <div class="metric-box"><span class="metric-val">0%</span><span style="font-size:0.6rem; color:var(--text-dim);">LOSS</span></div>
+                <div class="metric-box"><span class="metric-val" id="jitter">12ms</span><span style="font-size:0.6rem; color:var(--text-dim);">JITTER</span></div>
+                <div class="metric-box" style="grid-column: span 2;"><span class="metric-val" style="color:var(--accent);">STABLE</span><span style="font-size:0.6rem; color:var(--text-dim);">STATUS</span></div>
             </div>
-        </div>
-        <div style="padding: 15px 30px; background: rgba(0,0,0,0.2); font-size: 0.75rem; font-family: monospace; color: #64748b;">
-            <i class="fas fa-terminal"></i> [LOG] <span id="log-msg">Henter livedata fra Oslo-Node-1...</span>
         </div>
     </div>
 </section>
 
 <script>
-    let user = "";
+    let selectedPlan = { name: "1 mnd", total: 100, save: 0 };
+    let username = "";
 
-    function showPage(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('page-' + id).classList.add('active');
-        window.scrollTo(0,0);
+    function setPlan(mnd, price, save) {
+        selectedPlan = { name: mnd + " mnd", total: price, save: save };
+        document.querySelectorAll('.plan-opt').forEach(el => el.classList.remove('active'));
+        document.getElementById('opt-' + (mnd === 12 ? '12' : mnd)).classList.add('active');
     }
 
     function goToCheckout() {
-        user = document.getElementById('username').value || "user";
+        username = document.getElementById('username').value || "user";
+        document.getElementById('summary-name').innerText = "SRT Pro - " + selectedPlan.name;
+        document.getElementById('summary-total').innerText = selectedPlan.total.toFixed(2) + " kr";
+        
+        // MVA Utregning
+        const netto = selectedPlan.total / 1.25;
+        const mva = selectedPlan.total - netto;
+        document.getElementById('calc-netto').innerText = netto.toFixed(2);
+        document.getElementById('calc-mva').innerText = mva.toFixed(2);
+
+        if(selectedPlan.save > 0) {
+            document.getElementById('savings-box').style.display = 'block';
+            document.getElementById('summary-save').innerText = selectedPlan.save;
+        } else {
+            document.getElementById('savings-box').style.display = 'none';
+        }
         showPage('checkout');
     }
 
     function activateServer() {
-        // Generer URLer basert på brukernavn
-        document.getElementById('display-user').innerText = user;
+        document.getElementById('display-user').innerText = username;
         document.getElementById('nav-info').style.display = 'block';
-        
-        document.getElementById('val-pub').innerText = `pub_${user}_main`;
-        document.getElementById('val-play').innerText = `play_${user}_view`;
-        document.getElementById('val-obs').innerText = `srt://oslo.srt.stealth:10001?streamid=pub_${user}_main`;
-        document.getElementById('val-stats').innerText = `https://stats.srt.stealth/${user}`;
+        document.getElementById('val-pub').innerText = `pub_${username}_main`;
+        document.getElementById('val-play').innerText = `play_${username}_view`;
+        document.getElementById('val-obs').innerText = `srt://oslo.srt.stealth:10001?streamid=pub_${username}_main`;
+        document.getElementById('val-stats').innerText = `https://stats.srt.stealth/${username}`;
         
         showPage('dash');
-        startHealthEngine();
+        startEngine();
+    }
+
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('page-' + id).classList.add('active');
     }
 
     function copy(id) {
-        const text = document.getElementById(id).innerText;
-        navigator.clipboard.writeText(text);
+        navigator.clipboard.writeText(document.getElementById(id).innerText);
         alert("Kopiert!");
     }
 
-    // --- Stream Health Animering ---
-    function startHealthEngine() {
+    function startEngine() {
         const canvas = document.getElementById('pulseCanvas');
         const ctx = canvas.getContext('2d');
-        let x = 0;
-
+        let offset = 0;
         function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-            ctx.strokeStyle = '#8b5cf6';
-            ctx.lineWidth = 2;
-            ctx.moveTo(0, 40);
-            
-            for(let i=0; i<canvas.width; i++) {
-                ctx.lineTo(i, 40 + Math.sin(i * 0.05 + x) * 20 * Math.random());
-            }
-            ctx.stroke();
-            x += 0.1;
-            requestAnimationFrame(draw);
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            ctx.beginPath(); ctx.strokeStyle = '#8b5cf6'; ctx.moveTo(0, 40);
+            for(let i=0; i<canvas.width; i++) ctx.lineTo(i, 40 + Math.sin(i*0.05 + offset)*15);
+            ctx.stroke(); offset += 0.1; requestAnimationFrame(draw);
         }
         draw();
-
-        // Dynamiske tall
         setInterval(() => {
-            const br = (Math.random() * 2 + 4).toFixed(2);
-            document.getElementById('bitrate-live').innerText = br + " Mbps";
-            document.getElementById('jitter-val').innerText = Math.floor(Math.random() * 15 + 5) + "ms";
-            
-            const msgs = ["Pakker mottatt OK", "Buffer: 250ms", "Synkronisert", "Ingen pakketap"];
-            document.getElementById('log-msg').innerText = msgs[Math.floor(Math.random() * msgs.length)];
+            document.getElementById('br-live').innerText = (Math.random()*2+4).toFixed(2) + " Mbps";
+            document.getElementById('jitter').innerText = Math.floor(Math.random()*15+5) + "ms";
         }, 1000);
     }
 </script>
-
 </body>
 </html>
