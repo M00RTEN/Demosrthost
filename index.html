@@ -3,284 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRT StreamHost | Profesjonell SRT Hosting</title>
+    <title>SRT Host | Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --card-bg: #1e293b;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --text-main: #f8fafc;
-            --text-dim: #94a3b8;
-            --success: #10b981;
+            --bg-dark: #09090b;
+            --card-bg: #111114;
+            --item-bg: #18181b;
+            --accent: #6366f1;
+            --text-main: #ffffff;
+            --text-dim: #a1a1aa;
+            --border: #27272a;
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
             margin: 0;
-            line-height: 1.6;
+            padding: 20px;
         }
 
-        /* Navigasjon og Språkvelger */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 5%;
-            background: rgba(15, 23, 42, 0.9);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid #334155;
-        }
+        .container { max-width: 500px; margin: 0 auto; }
 
-        .logo { font-size: 1.5rem; font-weight: bold; color: var(--accent); }
-
-        .lang-switcher {
-            display: flex;
-            gap: 10px;
-            background: var(--card-bg);
-            padding: 5px;
-            border-radius: 8px;
-        }
-
-        .lang-btn {
-            padding: 5px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            border: none;
-            background: none;
-            color: var(--text-dim);
-        }
-
-        .lang-btn.active {
-            background: var(--accent);
-            color: white;
-        }
-
-        /* Container */
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        /* Språkvelger */
+        .lang-nav { text-align: right; margin-bottom: 10px; }
+        .lang-btn { background: none; border: 1px solid var(--border); color: white; cursor: pointer; padding: 5px 10px; border-radius: 4px; }
 
         /* Seksjoner */
         .section { display: none; }
         .section.active { display: block; }
 
-        /* Kort & Pris */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
-        .card {
+        /* Pris-kort */
+        .price-card {
             background: var(--card-bg);
-            padding: 2rem;
+            border: 1px solid var(--border);
             border-radius: 12px;
-            border: 1px solid #334155;
-            transition: transform 0.3s ease;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
         }
-        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
 
-        /* Knapper */
+        /* Liste-design fra bildet */
+        .data-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .data-row {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .data-row:last-child { border-bottom: none; }
+
+        .label { font-size: 0.85rem; color: var(--text-dim); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .value { font-size: 1rem; color: var(--text-main); font-family: monospace; }
+
         .btn {
-            display: inline-block;
             background: var(--accent);
             color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            text-decoration: none;
-            text-align: center;
-            cursor: pointer;
             border: none;
+            padding: 12px;
+            border-radius: 8px;
             width: 100%;
             font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
         }
 
-        /* Bestilling & Status */
-        .payment-sim { background: #000; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            background: #334155;
-        }
-        .online { color: var(--success); border: 1px solid var(--success); }
-
-        /* Guide Seksjon */
-        .guide-box {
-            background: #1e293b;
-            border-left: 4px solid var(--accent);
-            padding: 1.5rem;
-            margin: 1rem 0;
-        }
-
-        code {
-            background: #000;
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: #ec4899;
-        }
-
-        .url-display {
-            background: #0f172a;
-            padding: 1rem;
+        .guide {
+            background: #1e1b4b;
+            padding: 15px;
             border-radius: 8px;
-            font-family: monospace;
-            border: 1px dashed #475569;
-            margin: 10px 0;
-            display: flex;
-            justify-content: space-between;
+            font-size: 0.9rem;
+            border-left: 4px solid var(--accent);
         }
     </style>
 </head>
 <body>
 
-<nav>
-    <div class="logo"><i class="fas fa-broadcast-tower"></i> SRT Host</div>
-    <div style="display: flex; align-items: center; gap: 20px;">
-        <div class="lang-switcher">
-            <button class="lang-btn active" onclick="setLang('no')">NO</button>
-            <button class="lang-btn" onclick="setLang('en')">EN</button>
-        </div>
-        <a href="#" onclick="showSection('landing')" class="text-dim" style="text-decoration:none; color:white;">Hjem</a>
-    </div>
-</nav>
-
 <div class="container">
+    <div class="lang-nav">
+        <button class="lang-btn" onclick="toggleLang()">EN / NO</button>
+    </div>
 
-    <section id="landing" class="section active">
-        <h1 align="center" id="hero-title">Ultra-lav forsinkelse SRT Hosting</h1>
-        <p align="center" class="text-dim">Stream som en proff med dedikerte SRT-releer i hele verden.</p>
+    <section id="order-section" class="section active">
+        <div class="price-card">
+            <h2 id="t-title">SRT Hosting Plan</h2>
+            <h1 id="t-price">100 kr</h1>
+            <p class="text-dim" id="t-desc">Full tilgang til SRT og SRTLA servere</p>
+            <button class="btn" onclick="goToDashboard()">Bestill og Aktiver</button>
+        </div>
+    </section>
+
+    <section id="dash-section" class="section">
+        <h2 id="t-dash">Server Detaljer</h2>
         
-        <div class="grid">
-            <div class="card">
-                <h3>Starter</h3>
-                <p>1 Inngang / 2 Utganger</p>
-                <h2 id="price-tag">199 kr/mnd</h2>
-                <ul style="list-style: none; padding: 0;" class="text-dim">
-                    <li><i class="fas fa-check"></i> 20 Mbps Bitrate</li>
-                    <li><i class="fas fa-check"></i> 99.9% Oppetid</li>
-                </ul>
-                <button class="btn" onclick="showSection('checkout')">Bestill Nå</button>
+        <div class="data-container">
+            <div class="data-row">
+                <div class="label">Publisher ID</div>
+                <div class="value">pub_7721_main</div>
             </div>
-        </div>
-    </section>
-
-    <section id="checkout" class="section">
-        <h2>Fullfør din bestilling</h2>
-        <div class="grid">
-            <div class="card">
-                <h3>Logg inn eller Opprett konto</h3>
-                <input type="email" placeholder="E-post" style="width:100%; padding:10px; margin:10px 0; border-radius:5px; border:none;">
-                <input type="password" placeholder="Passord" style="width:100%; padding:10px; margin:10px 0; border-radius:5px; border:none;">
-                
-                <h3>Betaling</h3>
-                <div class="payment-sim">
-                    <p><i class="fab fa-cc-visa"></i> **** **** **** 4422</p>
-                </div>
-                <button class="btn" onclick="simulatePayment()">Betal og Aktiver</button>
-            </div>
-            <div class="card">
-                <h3>Sammendrag</h3>
-                <p>SRT Server - Europa (Oslo)</p>
-                <hr>
-                <p>Totalt å betale: <b>199,00 kr</b></p>
-            </div>
-        </div>
-    </section>
-
-    <section id="dashboard" class="section">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h2>Min SRT Server <span class="status-badge online">Aktiv</span></h2>
-            <button class="btn" style="width:auto; background:#ef4444;" onclick="showSection('landing')">Logg ut</button>
-        </div>
-
-        <div class="grid">
-            <div class="card">
-                <h3><i class="fas fa-link"></i> Tilkoblingsdetaljer</h3>
-                <p class="text-dim">Bruk disse i vMix, OBS eller din encoder.</p>
-                
-                <label>Input URL (Caller):</label>
-                <div class="url-display">
-                    srt://oslo-1.srthost.com:10001?streamid=input/user44
-                    <i class="fas fa-copy" style="cursor:pointer"></i>
-                </div>
-
-                <label>Output URL (Listener):</label>
-                <div class="url-display">
-                    srt://oslo-1.srthost.com:10001?streamid=output/user44
-                    <i class="fas fa-copy" style="cursor:pointer"></i>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3><i class="fas fa-chart-line"></i> Live Statistikk</h3>
-                <p>Bitrate: <span id="bitrate">0</span> Mbps</p>
-                <p>RTT (Latency): <span>24ms</span></p>
-                <div style="height:10px; background:#0f172a; border-radius:10px;">
-                    <div style="width:65%; height:100%; background:var(--success); border-radius:10px;"></div>
-                </div>
+            <div class="data-row">
+                <div class="label">Player ID</div>
+                <div class="value">play_9940_view</div>
             </div>
         </div>
 
-        <div class="card" style="margin-top:2rem;">
-            <h3><i class="fas fa-book"></i> Idiotsikker Oppsettsguide</h3>
-            
-            <div class="guide-box">
-                <h4>1. I din Encoder (OBS/vMix)</h4>
-                <p>Sett strømmen til <b>SRT</b>. Lim inn <b>Input URL</b>. Sørg for at modusen står som <code>Caller</code>.</p>
+        <div class="data-container">
+            <div class="data-row">
+                <div class="label" id="t-type">Type</div>
+                <div class="value">SRT</div>
             </div>
-
-            <div class="guide-box">
-                <h4>2. Mottaker (Studio/Vise)</h4>
-                <p>Mottakeren bruker <b>Output URL</b>. Hvis de ikke får bilde, sjekk at <code>Latency</code> i mottakeren er satt til minst 250ms.</p>
+            <div class="data-row">
+                <div class="label">SRTLA</div>
+                <div class="value">Enabled (Port 10002)</div>
+            </div>
+            <div class="data-row">
+                <div class="label">OBS/VLC URL:</div>
+                <div class="value">srt://oslo-node.srv:10001?streamid=pub_7721_main</div>
+            </div>
+            <div class="data-row">
+                <div class="label">Stats URL</div>
+                <div class="value">https://stats.srthost.no/live/7721</div>
             </div>
         </div>
+
+        <div class="guide">
+            <b id="t-guide-h">Idiotsikker Guide:</b><br>
+            <span id="t-guide-p">Lim inn OBS/VLC URL i din encoder. Bruk "Caller" modus. SRTLA brukes hvis du har dårlig nett og trenger bonding.</span>
+        </div>
+        <button class="btn" style="background:#3f3f46; margin-top:20px;" onclick="location.reload()">Logg ut</button>
     </section>
 </div>
 
 <script>
-    // Enkel språkskifter-funksjon
-    const translations = {
+    let currentLang = 'no';
+    
+    const text = {
         no: {
-            hero: "Ultra-lav forsinkelse SRT Hosting",
-            order: "Bestill Nå",
-            price: "199 kr/mnd"
+            title: "SRT Hosting Plan",
+            price: "100 kr",
+            desc: "Full tilgang til SRT og SRTLA servere",
+            dash: "Server Detaljer",
+            type: "Type",
+            guideH: "Idiotsikker Guide:",
+            guideP: "Lim inn OBS/VLC URL i din encoder. Bruk 'Caller' modus. SRTLA brukes hvis du har dårlig nett og trenger bonding."
         },
         en: {
-            hero: "Ultra-low latency SRT Hosting",
-            order: "Order Now",
-            price: "$19 / mo"
+            title: "SRT Hosting Plan",
+            price: "€10",
+            desc: "Full access to SRT and SRTLA servers",
+            dash: "Server Details",
+            type: "Connection Type",
+            guideH: "Foolproof Guide:",
+            guideP: "Paste the OBS/VLC URL into your encoder. Use 'Caller' mode. Use SRTLA for network bonding."
         }
     };
 
-    function setLang(lang) {
-        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
-        
-        document.getElementById('hero-title').innerText = translations[lang].hero;
-        document.getElementById('price-tag').innerText = translations[lang].price;
+    function toggleLang() {
+        currentLang = currentLang === 'no' ? 'en' : 'no';
+        document.getElementById('t-title').innerText = text[currentLang].title;
+        document.getElementById('t-price').innerText = text[currentLang].price;
+        document.getElementById('t-desc').innerText = text[currentLang].desc;
+        document.getElementById('t-dash').innerText = text[currentLang].dash;
+        document.getElementById('t-type').innerText = text[currentLang].type;
+        document.getElementById('t-guide-h').innerText = text[currentLang].guideH;
+        document.getElementById('t-guide-p').innerText = text[currentLang].guideP;
     }
 
-    function showSection(id) {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        window.scrollTo(0,0);
-    }
-
-    function simulatePayment() {
-        alert("Prosesserer betaling... Vennligst vent.");
-        setTimeout(() => {
-            alert("Suksess! Din SRT-server er nå konfigurert og klar.");
-            showSection('dashboard');
-            startStats();
-        }, 1500);
-    }
-
-    function startStats() {
-        setInterval(() => {
-            const br = (Math.random() * (6.5 - 5.8) + 5.8).toFixed(2);
-            document.getElementById('bitrate').innerText = br;
-        }, 2000);
+    function goToDashboard() {
+        document.getElementById('order-section').classList.remove('active');
+        document.getElementById('dash-section').classList.add('active');
     }
 </script>
 
