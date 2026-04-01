@@ -3,272 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRT Cloud Stealth | Next-Gen Hosting</title>
+    <title>SRT.STEALTH | IRL Hosting</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #8b5cf6;
-            --secondary: #06b6d4;
-            --bg: #030712;
-            --card: rgba(17, 24, 39, 0.8);
-            --border: rgba(255, 255, 255, 0.1);
-            --text: #f3f4f6;
+            --bg: #0b0b0f;
+            --panel-bg: #14141d;
+            --accent-pink: #d44c7d;
+            --accent-purple: #8b5cf6;
+            --text-gray: #9ca3af;
+            --border: #27272a;
         }
 
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: var(--bg);
-            background-image: radial-gradient(circle at 50% -20%, #1e1b4b, #030712);
-            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: white;
             margin: 0;
-            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        /* --- Navigasjon --- */
         nav {
+            width: 100%;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 1rem 8%;
-            backdrop-filter: blur(15px);
+            padding: 15px 50px;
+            box-sizing: border-box;
             border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        /* --- Hero / Landingsside --- */
-        .hero { text-align: center; padding: 120px 5%; animation: fadeIn 0.8s ease-out; }
-        .hero h1 { font-size: 4rem; margin-bottom: 1rem; line-height: 1; }
-        .hero p { color: #9ca3af; font-size: 1.25rem; max-width: 700px; margin: 0 auto 2.5rem; }
-
-        .btn-main {
-            background: var(--primary);
-            color: white;
-            padding: 16px 32px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            transition: 0.3s;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
-        }
-
-        .btn-main:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(139, 92, 246, 0.6); }
-
-        /* --- Dashboard Layout --- */
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
-
-        .glass-card {
-            background: var(--card);
+            background: rgba(20, 20, 29, 0.8);
             backdrop-filter: blur(10px);
+        }
+
+        .container { width: 90%; max-width: 900px; padding: 40px 0; }
+
+        /* Seksjonsoppsett fra bilde */
+        .section-box {
+            background: var(--panel-bg);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 30px;
-            position: relative;
+            border-radius: 15px;
+            margin-bottom: 25px;
             overflow: hidden;
         }
 
-        .status-badge {
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            border: 1px solid rgba(16, 185, 129, 0.2);
+        .section-header {
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 500;
+            border-bottom: 1px solid var(--border);
         }
 
-        /* --- Bitrate Graf Animering --- */
-        .stats-box { margin-top: 20px; height: 100px; display: flex; align-items: flex-end; gap: 4px; }
-        .bar { width: 100%; background: var(--secondary); min-height: 10%; transition: height 0.5s ease; border-radius: 2px 2px 0 0; opacity: 0.7; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        
+        .data-row {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: grid;
+            grid-template-columns: 1fr 2fr 100px;
+            align-items: center;
+            padding: 12px 25px;
+        }
 
-        /* --- Chat System --- */
-        .chat-widget {
+        .data-row:last-child { border-bottom: none; }
+
+        .label { color: white; font-weight: 600; font-size: 0.9rem; }
+        .value { color: var(--accent-pink); font-family: monospace; word-break: break-all; }
+        
+        .copy-btn {
+            background: #27272a;
+            color: white;
+            border: 1px solid #3f3f46;
+            padding: 6px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+
+        .copy-btn:hover { background: var(--accent-purple); }
+
+        /* Bitrate Graf */
+        .bitrate-container {
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 0 0 15px 15px;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 60px;
+        }
+
+        .bar { flex: 1; background: var(--accent-purple); min-height: 5px; transition: height 0.3s; border-radius: 2px; opacity: 0.6; }
+
+        /* Support Chat */
+        #chat-bubble {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            z-index: 9999;
-        }
-
-        .chat-btn {
+            background: var(--accent-purple);
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: var(--primary);
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
         }
 
-        .chat-window {
-            position: absolute;
-            bottom: 80px;
-            right: 0;
-            width: 300px;
-            background: #1f2937;
-            border-radius: 15px;
-            border: 1px solid var(--border);
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        .warning-text {
+            color: #71717a;
+            font-size: 0.75rem;
+            text-align: center;
+            padding: 15px;
+            text-decoration: underline;
         }
 
-        .chat-header { background: var(--primary); padding: 15px; font-weight: bold; }
-        .chat-body { height: 250px; padding: 15px; font-size: 0.85rem; overflow-y: auto; background: #111827; }
-        .chat-footer { padding: 10px; display: flex; gap: 5px; }
-        .chat-footer input { flex: 1; background: #374151; border: none; padding: 8px; border-radius: 5px; color: white; }
-
-        /* --- Utils --- */
         .hidden { display: none; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .data-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
-        .label { color: #9ca3af; font-size: 0.8rem; }
+        .btn-action { background: var(--accent-purple); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;}
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo">SRT.STEALTH</div>
-    <div style="display: flex; gap: 20px; align-items: center;">
-        <div id="langToggle" onclick="toggleLang()" style="cursor:pointer; font-size: 0.9rem;">EN | <b>NO</b></div>
-        <button class="btn-main" style="padding: 10px 20px; font-size: 0.8rem;" onclick="showPage('home')">Hjem</button>
+    <div style="font-weight: 900; letter-spacing: 1px; color: var(--accent-purple);">SRT.STEALTH</div>
+    <div style="display: flex; gap: 20px;">
+        <button class="copy-btn" onclick="toggleLang()" id="langBtn">English</button>
+        <button class="copy-btn" style="border-color: var(--accent-purple);" onclick="alert('Kobler til teknisk support...')">Support</button>
     </div>
 </nav>
 
-<section id="page-home" class="hero">
-    <h1 id="t-h1">Stream uten grenser.</h1>
-    <p id="t-p">Ultra-lav forsinkelse SRT & SRTLA hosting med 100% NVMe-drevne releer. Klar for studio-bruk på sekunder.</p>
-    
-    <div class="container">
-        <div class="glass-card" style="max-width: 400px; margin: 0 auto; border: 2px solid var(--primary);">
-            <h3>Premium Relé</h3>
-            <h2 style="font-size: 3rem; margin: 10px 0;">100 kr<span style="font-size: 1rem; color: #9ca3af;">/mnd</span></h2>
-            <p style="font-size: 0.8rem; color: #6b7280;">Ekskl. mva: 80 kr | Mva (25%): 20 kr</p>
-            <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
-            <ul style="text-align: left; list-style: none; padding: 0; margin-bottom: 30px;">
-                <li><i class="fas fa-check-circle" style="color:var(--secondary)"></i> Ubegrenset Ingress</li>
-                <li><i class="fas fa-check-circle" style="color:var(--secondary)"></i> SRTLA Bonding inkludert</li>
-                <li><i class="fas fa-check-circle" style="color:var(--secondary)"></i> Oslo / London / Frankfurt</li>
-            </ul>
-            <button class="btn-main" style="width: 100%;" onclick="simulateOrder()">Bestill nå</button>
-        </div>
-    </div>
-</section>
+<div class="container">
 
-<section id="page-dash" class="container hidden" style="animation: fadeIn 0.5s ease;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
-        <h2>Kontrollpanel <span class="status-badge">Online</span></h2>
-        <button class="btn-main" style="background: #374151;" onclick="showPage('home')">Logg ut</button>
+    <div class="section-box">
+        <div class="section-header">IRL Server Details</div>
     </div>
 
-    <div class="grid">
-        <div class="glass-card">
-            <div style="display: flex; justify-content: space-between;">
-                <h3>Live Bitrate</h3>
-                <span id="bitrate-val" style="font-weight: bold; color: var(--secondary);">0.00 Mbps</span>
+    <div class="section-box">
+        <div class="section-header">Stream Identifiers</div>
+        <div class="data-table">
+            <div class="data-row">
+                <div class="label">Publisher ID</div>
+                <div class="value">pub_5521_admin_main</div>
+                <button class="copy-btn" onclick="copy('pub_5521_admin_main')">Copy</button>
             </div>
-            <div class="stats-box" id="graph">
-                </div>
-        </div>
-
-        <div class="glass-card">
-            <h3>Server Detaljer</h3>
-            <div class="data-row"><span class="label">Publisher ID</span><span class="value">pub_alpha_772</span></div>
-            <div class="data-row"><span class="label">Player ID</span><span class="value">play_beta_991</span></div>
-            <div class="data-row"><span class="label">Type</span><span class="value">SRT / SRTLA</span></div>
-            <div class="data-row" style="border:none; flex-direction:column; gap:10px; margin-top:10px;">
-                <span class="label">OBS Connection URL</span>
-                <code style="background: #000; padding: 10px; border-radius: 5px; font-size: 0.8rem; color: var(--secondary);">srt://oslo.srt.stealth:10001?streamid=pub_alpha_772</code>
+            <div class="data-row">
+                <div class="label">Player ID</div>
+                <div class="value">play_8842_viewer</div>
+                <button class="copy-btn" onclick="copy('play_8842_viewer')">Copy</button>
             </div>
         </div>
     </div>
-</section>
 
-<div class="chat-widget">
-    <div class="chat-window" id="chatWin">
-        <div class="chat-header">Support Chat</div>
-        <div class="chat-body" id="chatBody">
-            <div style="background: #374151; padding: 8px; border-radius: 8px; margin-bottom: 10px; max-width: 80%;">
-                Hei! Jeg er din SRT-assistent. Hvordan kan jeg hjelpe deg i dag?
+    <div class="section-box">
+        <div class="section-header">Connection URLs</div>
+        <div class="data-table">
+            <div class="data-row">
+                <div class="label">SRT</div>
+                <div class="value">srt://oslo-1.srt.stealth:10001</div>
+                <button class="copy-btn" onclick="copy('srt://oslo-1.srt.stealth:10001')">Copy</button>
+            </div>
+            <div class="data-row">
+                <div class="label">SRTLA</div>
+                <div class="value">srtla://oslo-1.srt.stealth:10002</div>
+                <button class="copy-btn" onclick="copy('srtla://oslo-1.srt.stealth:10002')">Copy</button>
+            </div>
+            <div class="data-row">
+                <div class="label">OBS/VLC URL:</div>
+                <div class="value">srt://oslo-1.srt.stealth:10001?streamid=pub_5521_admin_main</div>
+                <button class="copy-btn" onclick="copy('srt://oslo-1.srt.stealth:10001?streamid=pub_5521_admin_main')">Copy</button>
+            </div>
+            <div class="data-row">
+                <div class="label">Stats URL</div>
+                <div class="value">https://stats.srt.stealth/live/5521</div>
+                <button class="copy-btn" onclick="window.open('#')">Copy</button>
             </div>
         </div>
-        <div class="chat-footer">
-            <input type="text" placeholder="Skriv melding..." id="chatInput">
-            <button onclick="sendMessage()" style="background: var(--primary); border:none; color:white; border-radius:5px; padding:0 10px;"><i class="fas fa-paper-plane"></i></button>
+        
+        <div class="bitrate-container">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span class="label" style="color: var(--accent-purple)">Live Network Load</span>
+                <span id="br-val" class="value" style="color: white;">5.42 Mbps</span>
+            </div>
+            <div class="bar-chart" id="chart"></div>
+        </div>
+
+        <div class="warning-text">
+            Dont share these keys/urls, anyone with your keys/urls can publish or play your stream!
         </div>
     </div>
-    <div class="chat-btn" onclick="document.getElementById('chatWin').style.display = (document.getElementById('chatWin').style.display === 'flex') ? 'none' : 'flex'">
-        <i class="fas fa-comment-dots" style="font-size: 1.5rem;"></i>
-    </div>
+
+</div>
+
+<div id="chat-bubble" onclick="alert('Live chat åpnes...')">
+    <i class="fas fa-headset fa-lg"></i>
 </div>
 
 <script>
-    // --- Sidehåndtering ---
-    function showPage(id) {
-        document.getElementById('page-home').classList.add('hidden');
-        document.getElementById('page-dash').classList.add('hidden');
-        document.getElementById('page-' + id).classList.remove('hidden');
+    // Kopieringsfunksjon
+    function copy(text) {
+        navigator.clipboard.writeText(text);
+        alert("Kopiert til utklippstavle!");
     }
 
-    function simulateOrder() {
-        alert("Betaling godkjent (Simulert). Aktiverer din SRT-node...");
-        setTimeout(() => { showPage('dash'); startBitrateSim(); }, 1000);
-    }
-
-    // --- Bitrate Simulator (Den geniale delen) ---
-    const graph = document.getElementById('graph');
-    for(let i=0; i<20; i++) {
-        let bar = document.createElement('div');
+    // Bitrate simulator
+    const chart = document.getElementById('chart');
+    for(let i=0; i<30; i++) {
+        const bar = document.createElement('div');
         bar.className = 'bar';
-        graph.appendChild(bar);
+        chart.appendChild(bar);
     }
 
-    function startBitrateSim() {
-        setInterval(() => {
-            const bars = document.querySelectorAll('.bar');
-            let total = 0;
-            bars.forEach(bar => {
-                const val = Math.floor(Math.random() * 80) + 10;
-                bar.style.height = val + '%';
-            });
-            document.getElementById('bitrate-val').innerText = (Math.random() * (6.8 - 5.2) + 5.2).toFixed(2) + " Mbps";
-        }, 800);
+    function updateStats() {
+        const bars = document.querySelectorAll('.bar');
+        bars.forEach(bar => {
+            bar.style.height = Math.floor(Math.random() * 50 + 10) + 'px';
+        });
+        document.getElementById('br-val').innerText = (Math.random() * 2 + 4).toFixed(2) + " Mbps";
     }
+    setInterval(updateStats, 800);
 
-    // --- Språk ---
-    let lang = 'no';
+    // Språkvelger
+    let isNo = true;
     function toggleLang() {
-        lang = lang === 'no' ? 'en' : 'no';
-        document.getElementById('t-h1').innerText = lang === 'no' ? "Stream uten grenser." : "Stream without limits.";
-        document.getElementById('t-p').innerText = lang === 'no' ? "Ultra-lav forsinkelse SRT & SRTLA hosting..." : "Ultra-low latency SRT & SRTLA hosting...";
-        document.getElementById('langToggle').innerHTML = lang === 'no' ? "EN | <b>NO</b>" : "<b>EN</b> | NO";
-    }
-
-    // --- Chat Funksjon ---
-    function sendMessage() {
-        const input = document.getElementById('chatInput');
-        if(!input.value) return;
-        
-        const msg = document.createElement('div');
-        msg.style = "background: var(--primary); padding: 8px; border-radius: 8px; margin-bottom: 10px; max-width: 80%; align-self: flex-end; margin-left: auto;";
-        msg.innerText = input.value;
-        document.getElementById('chatBody').appendChild(msg);
-        
-        input.value = "";
-        setTimeout(() => {
-            const reply = document.createElement('div');
-            reply.style = "background: #374151; padding: 8px; border-radius: 8px; margin-bottom: 10px; max-width: 80%;";
-            reply.innerText = "En tekniker vil koble seg til snart. Din billett-ID er #SRT-992.";
-            document.getElementById('chatBody').appendChild(reply);
-        }, 1000);
+        isNo = !isNo;
+        document.getElementById('langBtn').innerText = isNo ? "English" : "Norsk";
+        // Her kan du legge til mer logikk for å oversette tekster dynamisk
     }
 </script>
 
