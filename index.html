@@ -3,240 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRT.STEALTH | Next-Gen IRL</title>
+    <title>SRT.STEALTH | Enterprise Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --bg: #030305;
-            --card-bg: rgba(15, 15, 25, 0.9);
+            --bg: #050508;
+            --card-bg: rgba(20, 20, 35, 0.7);
             --accent: #8b5cf6;
-            --accent-glow: rgba(139, 92, 246, 0.4);
+            --accent-glow: rgba(139, 92, 246, 0.3);
             --pink: #ec4899;
             --green: #10b981;
+            --red: #ef4444;
             --border: rgba(255, 255, 255, 0.08);
             --text-dim: #94a3b8;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             background-color: var(--bg);
             background-image: 
-                radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.1) 0px, transparent 50%);
-            color: white;
-            margin: 0;
-            min-height: 100vh;
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
+            color: white; margin: 0; min-height: 100vh;
         }
 
-        /* --- Navigasjon --- */
         nav {
-            display: flex; justify-content: space-between; padding: 1.5rem 8%;
-            backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
-            position: sticky; top: 0; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 5%; backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000;
         }
 
-        .logo { font-size: 1.6rem; font-weight: 900; background: linear-gradient(to right, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; background: linear-gradient(to right, #8b5cf6, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* --- Pages --- */
-        .page { display: none; padding: 40px 8%; animation: slideUp 0.5s ease; }
-        .page.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 
-        /* --- Prisvelger (Ny) --- */
-        .plan-selector { display: flex; gap: 10px; margin-bottom: 25px; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 12px; border: 1px solid var(--border); }
-        .plan-opt { flex: 1; padding: 12px; border-radius: 8px; cursor: pointer; text-align: center; font-size: 0.85rem; transition: 0.3s; font-weight: 600; color: var(--text-dim); }
-        .plan-opt.active { background: var(--accent); color: white; box-shadow: 0 4px 15px var(--accent-glow); }
-        .discount-tag { font-size: 0.7rem; display: block; color: var(--green); }
-
-        /* --- Dashboard --- */
-        .section-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; margin-bottom: 30px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .section-header { padding: 20px 30px; background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .data-row { display: grid; grid-template-columns: 180px 1fr 60px; padding: 20px 30px; border-bottom: 1px solid var(--border); align-items: center; }
-        .label { color: var(--text-dim); font-size: 0.85rem; font-weight: 600; }
-        .value { font-family: 'JetBrains Mono', monospace; color: var(--pink); font-size: 0.95rem; }
-
-        .btn-action { background: linear-gradient(135deg, var(--accent), var(--pink)); color: white; border: none; padding: 18px; border-radius: 12px; font-weight: 800; cursor: pointer; width: 100%; transition: 0.3s; }
-        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--accent-glow); }
+        /* Path Cards */
+        .path-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
         
-        .copy-btn { background: #1e1e2e; color: white; border: 1px solid var(--border); padding: 8px; border-radius: 8px; cursor: pointer; }
+        .path-card { 
+            background: var(--card-bg); border: 1px solid var(--border); 
+            border-radius: 20px; padding: 25px; transition: 0.3s;
+            position: relative; overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
 
-        /* --- Stream Health --- */
-        .health-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; padding: 30px; }
-        .main-viz { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px; position: relative; height: 140px; overflow: hidden; }
-        .pulse-line { width: 100%; height: 2px; background: var(--accent); position: absolute; top: 50%; left: 0; box-shadow: 0 0 20px var(--accent); animation: pulseAnim 2s infinite linear; }
-        .metric-box { text-align: center; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid var(--border); }
-        .metric-val { font-size: 1.4rem; font-weight: 900; color: var(--green); display: block; }
+        .path-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+
+        .status-badge { 
+            padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; 
+            font-weight: 800; text-transform: uppercase; margin-bottom: 15px; display: inline-block;
+        }
+        .online { background: rgba(16, 185, 129, 0.1); color: var(--green); border: 1px solid var(--green); }
+        .offline { background: rgba(239, 68, 68, 0.1); color: var(--red); border: 1px solid var(--red); }
+
+        .path-title { font-size: 1.2rem; font-weight: 700; margin: 10px 0; display: flex; align-items: center; gap: 10px; }
         
-        @keyframes pulseAnim { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        .stats-mini { display: flex; gap: 15px; margin: 15px 0; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 10px; }
+        .stat-item { flex: 1; }
+        .stat-label { font-size: 0.6rem; color: var(--text-dim); display: block; }
+        .stat-val { font-family: 'JetBrains Mono', monospace; font-weight: bold; font-size: 0.9rem; }
 
-        input { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border); padding: 14px; border-radius: 12px; color: white; box-sizing: border-box; margin-bottom: 15px; }
+        /* Action Buttons */
+        .link-group { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; }
+        .copy-link { 
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            padding: 10px 15px; border-radius: 10px; display: flex; 
+            justify-content: space-between; align-items: center;
+            cursor: pointer; transition: 0.2s; font-size: 0.8rem;
+        }
+        .copy-link:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
+        .copy-link i { color: var(--text-dim); }
+
+        .btn-main {
+            background: linear-gradient(135deg, var(--accent), var(--pink));
+            color: white; border: none; padding: 15px 30px; border-radius: 12px;
+            font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%;
+        }
+
+        /* Hero / Login */
+        #login-screen { text-align: center; max-width: 500px; margin: 100px auto; }
+        .input-field { 
+            width: 100%; padding: 15px; background: rgba(0,0,0,0.3); 
+            border: 1px solid var(--border); border-radius: 12px; 
+            color: white; margin-bottom: 15px; box-sizing: border-box;
+        }
+
+        .visual-pulse {
+            height: 3px; width: 100%; background: var(--border);
+            position: relative; overflow: hidden; margin-top: 15px; border-radius: 2px;
+        }
+        .pulse-bar {
+            height: 100%; width: 30%; background: var(--accent);
+            position: absolute; animation: moveBar 2s infinite linear;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        @keyframes moveBar {
+            0% { left: -30%; }
+            100% { left: 100%; }
+        }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo" onclick="location.reload()">SRT.STEALTH</div>
-    <div id="nav-info" style="display:none; font-size: 0.9rem; color: var(--text-dim);">
-        Bruker: <span id="display-user" style="color: white; font-weight: bold;">-</span>
-    </div>
+    <div class="logo">SRT.STEALTH <span style="font-weight: 300; font-size: 0.8rem; color: var(--text-dim);">V2.5</span></div>
+    <div id="user-display" style="font-size: 0.9rem; font-weight: bold;"></div>
 </nav>
 
-<section id="page-login" class="page active">
-    <div style="max-width: 480px; margin: 0 auto; text-align: center;">
-        <h1 style="font-size: 2.5rem; margin-bottom: 10px;">Opprett din Node</h1>
-        <p style="color: var(--text-dim); margin-bottom: 40px;">Velg plan og brukernavn for din SRT-tunnel.</p>
-        
-        <div class="section-box" style="padding: 30px; text-align: left;">
-            <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px; display: block;">VELG ABONNEMENT</label>
-            <div class="plan-selector">
-                <div class="plan-opt active" onclick="setPlan(1, 100, 0)" id="opt-1">
-                    1 MND
-                    <span style="display:block; font-size: 1.1rem;">100 kr</span>
-                </div>
-                <div class="plan-opt" onclick="setPlan(6, 540, 60)" id="opt-6">
-                    6 MND
-                    <span style="display:block; font-size: 1.1rem;">540 kr</span>
-                    <span class="discount-tag">Spar 60 kr</span>
-                </div>
-                <div class="plan-opt" onclick="setPlan(12, 960, 240)" id="opt-12">
-                    1 ÅR
-                    <span style="display:block; font-size: 1.1rem;">960 kr</span>
-                    <span class="discount-tag">Spar 240 kr</span>
-                </div>
-            </div>
-
-            <input type="text" id="username" placeholder="Ønsket brukernavn (f.eks kris_live)">
-            <input type="email" placeholder="Din e-post">
-            <input type="password" placeholder="Passord">
-            
-            <button class="btn-action" onclick="goToCheckout()">Gå til betaling</button>
-        </div>
+<div class="container">
+    <div id="login-screen">
+        <h1 style="font-size: 3rem; margin-bottom: 10px;">Cloud Node</h1>
+        <p style="color: var(--text-dim); margin-bottom: 30px;">Skriv inn ditt kallenavn for å generere dine SRT-baner.</p>
+        <input type="text" id="streamer-name" class="input-field" placeholder="f.eks. KrisLive">
+        <button class="btn-main" onclick="initDashboard()">GENERER DASHBORD</button>
     </div>
-</section>
 
-<section id="page-checkout" class="page">
-    <div style="max-width: 450px; margin: 0 auto;">
-        <h2 style="text-align: center; margin-bottom: 30px;">Oppsummering</h2>
-        <div class="section-box" style="padding: 30px;">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                <span id="summary-name">SRT Pro - 1 mnd</span>
-                <span id="summary-total" style="font-weight: bold;">100,00 kr</span>
-            </div>
-            <div id="savings-box" style="display:none; color: var(--green); font-size: 0.85rem; margin-bottom: 15px;">
-                <i class="fas fa-gift"></i> Du sparer <span id="summary-save">0</span> kr på denne pakken!
-            </div>
-            <div style="font-size: 0.8rem; color: var(--text-dim); border-top: 1px solid var(--border); pt-15; margin-top:15px; padding-top:15px;">
-                Spesifikasjon:<br>
-                Netto: <span id="calc-netto">80,00</span> kr<br>
-                Moms (25%): <span id="calc-mva">20,00</span> kr
-            </div>
-            <button class="btn-action" style="margin-top:25px;" onclick="activateServer()">Bekreft og betal</button>
-        </div>
-    </div>
-</section>
-
-<section id="page-dash" class="page" style="max-width: 1000px; margin: 0 auto;">
-    <div class="section-box">
-        <div class="section-header">
-            <span>IRL Server Details</span>
-            <span style="color: var(--green); font-size: 0.8rem;"><i class="fas fa-circle"></i> SYSTEM ONLINE</span>
+    <div id="main-dash" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h2>Aktive Strømmer</h2>
+            <div style="color: var(--green); font-size: 0.8rem;"><i class="fas fa-shield-halved"></i> KRYPTERING AKTIV (AES-128)</div>
         </div>
         
-        <div class="data-row"><div class="label">Publisher ID</div><div class="value" id="val-pub"></div><button class="copy-btn" onclick="copy('val-pub')"><i class="fas fa-copy"></i></button></div>
-        <div class="data-row"><div class="label">Player ID</div><div class="value" id="val-play"></div><button class="copy-btn" onclick="copy('val-play')"><i class="fas fa-copy"></i></button></div>
-        <div class="data-row"><div class="label">SRT Endpoint</div><div class="value" id="val-srt">srt://oslo.srt.stealth:10001</div><button class="copy-btn" onclick="copy('val-srt')"><i class="fas fa-copy"></i></button></div>
-        <div class="data-row"><div class="label">OBS URL</div><div class="value" id="val-obs"></div><button class="copy-btn" onclick="copy('val-obs')"><i class="fas fa-copy"></i></button></div>
-        <div class="data-row"><div class="label">Stats URL</div><div class="value" id="val-stats"></div><button class="copy-btn" onclick="copy('val-stats')"><i class="fas fa-copy"></i></button></div>
-    </div>
-
-    <h3 style="font-size: 0.9rem; color: var(--text-dim); margin-left: 10px;">STREAM HEALTH ENGINE</h3>
-    <div class="section-box">
-        <div class="health-grid">
-            <div class="main-viz">
-                <div style="display: flex; justify-content: space-between; position: relative; z-index: 2;">
-                    <div><span style="font-size: 0.6rem; color: var(--text-dim);">BITRATE</span><div id="br-live" style="font-size: 1.5rem; font-weight: 900; color: var(--accent);">5.20 Mbps</div></div>
-                    <div style="text-align: right;"><span style="font-size: 0.6rem; color: var(--text-dim);">MODE</span><div style="font-weight: bold;">SRTLA Bonded</div></div>
-                </div>
-                <div class="pulse-line"></div>
-                <canvas id="pulseCanvas" style="position:absolute; bottom:0; left:0; width:100%; height:80px; opacity: 0.3;"></canvas>
+        <div class="path-grid" id="path-container">
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <div class="metric-box"><span class="metric-val">0%</span><span style="font-size:0.6rem; color:var(--text-dim);">LOSS</span></div>
-                <div class="metric-box"><span class="metric-val" id="jitter">12ms</span><span style="font-size:0.6rem; color:var(--text-dim);">JITTER</span></div>
-                <div class="metric-box" style="grid-column: span 2;"><span class="metric-val" style="color:var(--accent);">STABLE</span><span style="font-size:0.6rem; color:var(--text-dim);">STATUS</span></div>
-            </div>
-        </div>
     </div>
-</section>
+</div>
 
 <script>
-    let selectedPlan = { name: "1 mnd", total: 100, save: 0 };
-    let username = "";
+    const PATHS = [
+        { id: 'main', name: 'Main Production', port: 10001, desc: 'Hovedbane for OBS' },
+        { id: 'backup', name: 'Safe Backup', port: 10002, desc: 'Sekundær failover' },
+        { id: 'mobile', name: 'Mobile SRTLA', port: 10003, desc: 'Optimert for 4G/5G bonding' },
+        { id: '4k', name: 'Ultra 4K', port: 10004, desc: 'Høy bitrate bane' },
+        { id: 'lowlat', name: 'Sub-Second', port: 10005, desc: 'Minimum delay bane' }
+    ];
 
-    function setPlan(mnd, price, save) {
-        selectedPlan = { name: mnd + " mnd", total: price, save: save };
-        document.querySelectorAll('.plan-opt').forEach(el => el.classList.remove('active'));
-        document.getElementById('opt-' + (mnd === 12 ? '12' : mnd)).classList.add('active');
-    }
+    function initDashboard() {
+        const name = document.getElementById('streamer-name').value;
+        if (!name) return alert("Vennligst skriv et navn");
 
-    function goToCheckout() {
-        username = document.getElementById('username').value || "user";
-        document.getElementById('summary-name').innerText = "SRT Pro - " + selectedPlan.name;
-        document.getElementById('summary-total').innerText = selectedPlan.total.toFixed(2) + " kr";
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('main-dash').style.display = 'block';
+        document.getElementById('user-display').innerText = `NODE: ${name.toUpperCase()}`;
+
+        const container = document.getElementById('path-container');
         
-        // MVA Utregning
-        const netto = selectedPlan.total / 1.25;
-        const mva = selectedPlan.total - netto;
-        document.getElementById('calc-netto').innerText = netto.toFixed(2);
-        document.getElementById('calc-mva').innerText = mva.toFixed(2);
+        PATHS.forEach(path => {
+            const streamId = `${name}_${path.id}`;
+            const srtUrl = `srt://oslo.srt.stealth:${path.port}?streamid=pub_${streamId}`;
+            const obsUrl = `srt://oslo.srt.stealth:${path.port}?streamid=play_${streamId}`;
+            const statsUrl = `https://stats.srt.stealth/${name}/${path.id}`;
 
-        if(selectedPlan.save > 0) {
-            document.getElementById('savings-box').style.display = 'block';
-            document.getElementById('summary-save').innerText = selectedPlan.save;
-        } else {
-            document.getElementById('savings-box').style.display = 'none';
-        }
-        showPage('checkout');
+            container.innerHTML += `
+                <div class="path-card">
+                    <div class="status-badge online" id="status-${path.id}">Live</div>
+                    <div class="path-title"><i class="fas fa-tower-broadcast" style="color: var(--accent);"></i> ${path.name}</div>
+                    <p style="font-size: 0.75rem; color: var(--text-dim); margin: 0;">${path.desc}</p>
+                    
+                    <div class="stats-mini">
+                        <div class="stat-item">
+                            <span class="stat-label">BITRATE</span>
+                            <span class="stat-val" id="br-${path.id}" style="color: var(--accent);">0.00 Mbps</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">RTT</span>
+                            <span class="stat-val" id="rtt-${path.id}">24ms</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">LOSS</span>
+                            <span class="stat-val" style="color: var(--green);">0%</span>
+                        </div>
+                    </div>
+
+                    <div class="link-group">
+                        <div class="copy-link" onclick="copyText('${srtUrl}')">
+                            <span><i class="fas fa-mobile-alt"></i> Mobil Link (Larix)</span>
+                            <i class="fas fa-copy"></i>
+                        </div>
+                        <div class="copy-link" onclick="copyText('${obsUrl}')">
+                            <span><i class="fas fa-desktop"></i> OBS Ingest</span>
+                            <i class="fas fa-copy"></i>
+                        </div>
+                        <div class="copy-link" onclick="window.open('${statsUrl}')">
+                            <span><i class="fas fa-chart-line"></i> Se Full Stats</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </div>
+                    </div>
+
+                    <div class="visual-pulse">
+                        <div class="pulse-bar"></div>
+                    </div>
+                </div>
+            `;
+        });
+
+        startSimulatedStats();
     }
 
-    function activateServer() {
-        document.getElementById('display-user').innerText = username;
-        document.getElementById('nav-info').style.display = 'block';
-        document.getElementById('val-pub').innerText = `pub_${username}_main`;
-        document.getElementById('val-play').innerText = `play_${username}_view`;
-        document.getElementById('val-obs').innerText = `srt://oslo.srt.stealth:10001?streamid=pub_${username}_main`;
-        document.getElementById('val-stats').innerText = `https://stats.srt.stealth/${username}`;
-        
-        showPage('dash');
-        startEngine();
+    function copyText(text) {
+        navigator.clipboard.writeText(text);
+        // Enkel visuell feedback
+        const btn = event.currentTarget;
+        const original = btn.innerHTML;
+        btn.innerHTML = '<span style="color: var(--green)">Kopiert til utklippstavle!</span>';
+        setTimeout(() => btn.innerHTML = original, 2000);
     }
 
-    function showPage(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('page-' + id).classList.add('active');
-    }
-
-    function copy(id) {
-        navigator.clipboard.writeText(document.getElementById(id).innerText);
-        alert("Kopiert!");
-    }
-
-    function startEngine() {
-        const canvas = document.getElementById('pulseCanvas');
-        const ctx = canvas.getContext('2d');
-        let offset = 0;
-        function draw() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.beginPath(); ctx.strokeStyle = '#8b5cf6'; ctx.moveTo(0, 40);
-            for(let i=0; i<canvas.width; i++) ctx.lineTo(i, 40 + Math.sin(i*0.05 + offset)*15);
-            ctx.stroke(); offset += 0.1; requestAnimationFrame(draw);
-        }
-        draw();
+    function startSimulatedStats() {
         setInterval(() => {
-            document.getElementById('br-live').innerText = (Math.random()*2+4).toFixed(2) + " Mbps";
-            document.getElementById('jitter').innerText = Math.floor(Math.random()*15+5) + "ms";
-        }, 1000);
+            PATHS.forEach(p => {
+                const br = (Math.random() * 3 + 4).toFixed(2);
+                const rtt = Math.floor(Math.random() * 15 + 10);
+                document.getElementById(`br-${p.id}`).innerText = br + " Mbps";
+                document.getElementById(`rtt-${p.id}`).innerText = rtt + "ms";
+                
+                // Tilfeldig status-blink
+                const badge = document.getElementById(`status-${p.id}`);
+                if(Math.random() > 0.98) {
+                    badge.className = 'status-badge offline';
+                    badge.innerText = 'Reconnecting';
+                } else {
+                    badge.className = 'status-badge online';
+                    badge.innerText = 'Live';
+                }
+            });
+        }, 1500);
     }
 </script>
+
 </body>
 </html>
