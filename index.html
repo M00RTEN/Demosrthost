@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SRT.STEALTH | Enterprise Dashboard</title>
+    <title>SRT.STEALTH | Professional NOC</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -15,6 +15,7 @@
             --border: #232333;
             --red: #ff4757;
             --green: #2ed573;
+            --orange: #ffa502;
         }
 
         body {
@@ -24,111 +25,59 @@
             margin: 0; padding: 20px 30px;
         }
 
-        /* --- SYSTEM TELEMETRY HEADER --- */
-        .system-stats {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
+        /* System Bar */
+        .system-stats { display: flex; gap: 20px; margin-bottom: 20px; }
+        .sys-card { background: var(--panel); border: 1px solid var(--border); padding: 15px 25px; border-radius: 12px; flex: 1; display: flex; align-items: center; gap: 15px; }
+        .sys-icon { font-size: 1.5rem; color: var(--accent); background: rgba(0, 242, 255, 0.1); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; }
+        .sys-value { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: bold; }
+        .sys-label { font-size: 0.65rem; color: var(--dim); text-transform: uppercase; }
 
-        .sys-card {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            padding: 15px 25px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex: 1;
-        }
-
-        .sys-icon {
-            font-size: 1.5rem;
-            color: var(--accent);
-            background: rgba(0, 242, 255, 0.1);
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-        }
-
-        .sys-info { display: flex; flex-direction: column; }
-        .sys-label { font-size: 0.7rem; color: var(--dim); text-transform: uppercase; letter-spacing: 1px; }
-        .sys-value { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: bold; }
-
-        .progress-mini {
-            width: 100%;
-            height: 4px;
-            background: #222;
-            border-radius: 2px;
-            margin-top: 8px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--accent);
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
-        /* --- DASHBOARD CONTENT --- */
-        .header-area {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
-        }
-
-        .btn-add {
-            background: var(--green); color: #000; border: none;
-            padding: 10px 22px; border-radius: 8px; font-weight: 800;
-            cursor: pointer; display: flex; align-items: center; gap: 8px;
-        }
-
-        .srt-table { width: 100%; border-collapse: separate; border-spacing: 0 12px; }
+        /* Table & Rows */
+        .srt-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
         .srt-table th { text-align: left; padding: 0 20px; color: var(--dim); font-size: 0.7rem; text-transform: uppercase; }
 
-        .stream-row { background: var(--panel); border: 1px solid var(--border); }
-        .stream-row td { padding: 15px 20px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); vertical-align: middle; }
+        .stream-row { background: var(--panel); transition: 0.3s; }
+        .stream-row td { padding: 15px 20px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
         .stream-row td:first-child { border-left: 1px solid var(--border); border-radius: 12px 0 0 12px; }
         .stream-row td:last-child { border-right: 1px solid var(--border); border-radius: 0 12px 12px 0; }
 
-        .metric-box {
-            background: rgba(0,0,0,0.5); border: 1px solid var(--border);
-            padding: 10px; border-radius: 8px; text-align: center; min-width: 100px;
+        /* Log Section (Expandable) */
+        .log-container { 
+            display: none; 
+            background: #0a0a0f; 
+            border: 1px solid var(--border); 
+            border-top: none;
+            margin-top: -10px; 
+            margin-bottom: 10px;
+            border-radius: 0 0 12px 12px;
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
         }
-        .metric-label { display: block; font-size: 0.6rem; color: var(--dim); margin-bottom: 3px; }
-        .metric-value { font-family: 'JetBrains Mono', monospace; font-weight: bold; font-size: 0.95rem; }
+        .log-entry { margin-bottom: 5px; display: flex; gap: 15px; }
+        .log-time { color: var(--dim); min-width: 60px; }
+        .log-msg.error { color: var(--red); }
+        .log-msg.warn { color: var(--orange); }
+        .log-msg.info { color: var(--green); }
 
-        .link-container { display: flex; flex-direction: column; gap: 6px; width: 350px; }
-        .link-row { display: flex; align-items: center; gap: 10px; background: #000; padding: 4px 8px; border-radius: 4px; border: 1px solid #222; }
-        .link-info { font-size: 0.65rem; width: 85px; color: var(--dim); line-height: 1.1; }
-        .link-url { font-size: 0.7rem; color: var(--accent); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: monospace; }
+        /* Components */
+        .metric-box { background: rgba(0,0,0,0.5); border: 1px solid var(--border); padding: 8px; border-radius: 8px; text-align: center; min-width: 90px; }
+        .metric-label { display: block; font-size: 0.6rem; color: var(--dim); margin-bottom: 2px; }
+        .metric-value { font-weight: bold; font-size: 0.9rem; }
+
+        .link-row { display: flex; align-items: center; gap: 8px; background: #000; padding: 4px 8px; border-radius: 4px; border: 1px solid #222; margin-bottom: 4px; }
+        .link-url { font-size: 0.65rem; color: var(--accent); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         
-        .copy-btn { 
-            background: #222; color: #fff; border: none; padding: 4px 8px; 
-            border-radius: 3px; font-size: 0.6rem; font-weight: bold; cursor: pointer;
-        }
-        .copy-btn:hover { background: var(--accent); color: #000; }
+        .btn-action { background: none; border: 1px solid var(--dim); color: var(--text); padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.7rem; }
+        .btn-action:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-preview { background: rgba(0, 242, 255, 0.1); color: var(--accent); border: 1px solid var(--accent); width: 100%; padding: 8px; border-radius: 6px; font-weight: bold; margin-top: 5px; cursor: pointer; }
 
-        .btn-preview {
-            background: rgba(0, 242, 255, 0.1); color: var(--accent); border: 1px solid var(--accent);
-            padding: 8px; width: 100%; border-radius: 6px; cursor: pointer; font-size: 0.75rem;
-            margin-top: 10px; font-weight: bold;
-        }
-
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
         .online { background: var(--green); box-shadow: 0 0 8px var(--green); }
         .offline { background: var(--red); }
 
-        .btn-delete { color: var(--red); background: none; border: none; cursor: pointer; font-size: 1.1rem; opacity: 0.4; }
-        .btn-delete:hover { opacity: 1; }
-
-        #player-modal {
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 700px; background: #000; border: 1px solid var(--accent); z-index: 1000; border-radius: 12px;
-        }
+        /* Modal Player */
+        #player-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 700px; background: #000; border: 1px solid var(--accent); z-index: 1000; border-radius: 12px; }
         .modal-body { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; background: #050505; }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; }
     </style>
@@ -138,48 +87,28 @@
 <div class="system-stats">
     <div class="sys-card">
         <div class="sys-icon"><i class="fas fa-microchip"></i></div>
-        <div class="sys-info">
-            <span class="sys-label">CPU Belastning</span>
-            <span class="sys-value" id="cpu-val">--%</span>
-            <div class="progress-mini"><div class="progress-fill" id="cpu-bar"></div></div>
-        </div>
+        <div class="sys-info"><span class="sys-label">CPU Load</span><span class="sys-value" id="cpu-val">22%</span></div>
     </div>
     <div class="sys-card">
         <div class="sys-icon"><i class="fas fa-upload"></i></div>
-        <div class="sys-info">
-            <span class="sys-label">Total Upload Bruk</span>
-            <span class="sys-value" id="upload-val">-- Mbps</span>
-            <div class="progress-mini"><div class="progress-fill" id="upload-bar" style="background: var(--green);"></div></div>
-        </div>
-    </div>
-    <div class="sys-card">
-        <div class="sys-icon"><i class="fas fa-network-wired"></i></div>
-        <div class="sys-info">
-            <span class="sys-label">Server Uptime</span>
-            <span class="sys-value">12d 04h 22m</span>
-        </div>
+        <div class="sys-info"><span class="sys-label">Total Traffic</span><span class="sys-value" id="upload-val">12.4 Mbps</span></div>
     </div>
 </div>
 
-<div class="header-area">
-    <div>
-        <h1 style="margin:0; font-size: 1.6rem;">SRT.STEALTH <span style="font-weight: 200; color: var(--dim);">PRO HOST</span></h1>
-        <p style="color: var(--dim); font-size: 0.8rem;">Global Port: 10001 | Status: Active</p>
-    </div>
-    <button class="btn-add" onclick="addPath()">
-        <i class="fas fa-plus-circle"></i> ADD PATH
-    </button>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h1 style="margin:0; font-size: 1.4rem;">SRT.STEALTH <span style="font-weight: 200; color: var(--dim);">NOC PANEL</span></h1>
+    <button class="btn-action" style="background: var(--green); color: #000; font-weight: bold;" onclick="addPath()">+ ADD PATH</button>
 </div>
 
 <table class="srt-table">
     <thead>
         <tr>
-            <th>Stream</th>
+            <th>Streamer</th>
             <th>Status</th>
-            <th>Bitrate & Preview</th>
-            <th>OBS-Seere</th>
-            <th>Lenker (Port 10001)</th>
-            <th></th>
+            <th>Bitrate & Monitor</th>
+            <th>OBS Count</th>
+            <th>Connection Strings</th>
+            <th>Logs</th>
         </tr>
     </thead>
     <tbody id="main-content"></tbody>
@@ -191,40 +120,26 @@
         <span id="modal-name" style="font-weight:bold; color:var(--accent);">PREVIEW</span>
         <i class="fas fa-times" onclick="closePlayer()" style="cursor:pointer;"></i>
     </div>
-    <div class="modal-body">
-        <div style="text-align:center;">
-            <div class="online" style="width:12px; height:12px; margin:0 auto 10px;"></div>
-            <div id="player-text" style="font-family: monospace; font-size: 0.9rem;">CONNECTING...</div>
-        </div>
-    </div>
+    <div class="modal-body"><div id="player-text">CONNECTING...</div></div>
 </div>
 
 <script>
     let paths = [
-        { id: '1', user: 'Kristoffer_Live', status: 'online', bitrate: '6.2', viewers: 12 },
-        { id: '2', user: 'Marius_IRL', status: 'online', bitrate: '4.5', viewers: 8 },
-        { id: '3', user: 'Siri_Stream', status: 'offline', bitrate: '0.0', viewers: 0 }
+        { 
+            id: '1', user: 'Kristoffer_Live', status: 'online', bitrate: '6.2', viewers: 12, 
+            logs: [
+                { time: '14:02:11', msg: 'Handshake complete (Caller)', type: 'info' },
+                { time: '14:15:30', msg: 'Network Jitter detected (120ms)', type: 'warn' },
+                { time: '14:15:32', msg: 'Dropped 42 packets (Congestion)', type: 'error' }
+            ] 
+        },
+        { 
+            id: '2', user: 'Marius_IRL', status: 'online', bitrate: '4.5', viewers: 8, 
+            logs: [{ time: '14:20:00', msg: 'Stream started (AES-128)', type: 'info' }] 
+        }
     ];
 
     const SERVER = "oslo.srt.stealth";
-
-    // --- SYSTEM SIMULATOR ---
-    function updateSystemStats() {
-        // Simulerer CPU mellom 15% og 45%
-        const cpu = Math.floor(Math.random() * 30) + 15;
-        document.getElementById('cpu-val').innerText = cpu + "%";
-        document.getElementById('cpu-bar').style.width = cpu + "%";
-
-        // Regner ut total upload fra aktive stier
-        let totalUpload = paths.reduce((acc, p) => acc + parseFloat(p.bitrate), 0);
-        document.getElementById('upload-val').innerText = totalUpload.toFixed(1) + " Mbps";
-        
-        // Simulerer bar-fyll (max 100 Mbps i dette eksempelet)
-        let uploadPercent = Math.min((totalUpload / 100) * 100, 100);
-        document.getElementById('upload-bar').style.width = uploadPercent + "%";
-    }
-
-    setInterval(updateSystemStats, 2000);
 
     function render() {
         const container = document.getElementById('main-content');
@@ -232,100 +147,84 @@
             <tr class="stream-row">
                 <td>
                     <div style="font-weight: bold;">${p.user}</div>
-                    <div style="font-size: 0.6rem; color: var(--dim);">ID: ${p.id}</div>
+                    <div style="font-size: 0.6rem; color: var(--dim);">PORT: 10001</div>
                 </td>
                 <td>
                     <span class="status-dot ${p.status}"></span>
-                    <span style="font-size: 0.75rem; font-weight: 800; color: ${p.status === 'online' ? 'var(--green)' : 'var(--red)'}">
-                        ${p.status.toUpperCase()}
-                    </span>
+                    <span style="font-size: 0.75rem; font-weight: 800; color: ${p.status === 'online' ? 'var(--green)' : 'var(--red)'}">${p.status.toUpperCase()}</span>
                 </td>
                 <td style="width: 150px;">
-                    <div class="metric-box">
-                        <span class="metric-label">BITRATE</span>
-                        <span class="metric-value">${p.bitrate} Mbps</span>
-                    </div>
-                    <button class="btn-preview" onclick="openPlayer('${p.user}')">
-                        <i class="fas fa-play"></i> START PREVIEW
-                    </button>
+                    <div class="metric-box"><span class="metric-label">BITRATE</span><span class="metric-value">${p.bitrate} Mbps</span></div>
+                    <button class="btn-preview" onclick="openPlayer('${p.user}')">MONITOR</button>
+                </td>
+                <td><div class="metric-box"><span class="metric-label">SEERE</span><span class="metric-value">${p.viewers}</span></div></td>
+                <td>
+                    <div class="link-row"><span class="link-url">srt://${SERVER}:10001?id=pub_${p.user}</span></div>
+                    <div class="link-row"><span class="link-url">srt://${SERVER}:10001?id=play_${p.user}</span></div>
                 </td>
                 <td>
-                    <div class="metric-box">
-                        <span class="metric-label">OBS-SEERE</span>
-                        <span class="metric-value">${p.viewers}</span>
-                    </div>
-                </td>
-                <td>
-                    <div class="link-container">
-                        <div class="link-row">
-                            <span class="link-info">📱 Mobil /<br>Backpack</span>
-                            <span class="link-url">srt://${SERVER}:10001?streamid=pub_${p.user}</span>
-                            <button class="copy-btn" onclick="copyText(this)">COPY</button>
-                        </div>
-                        <div class="link-row">
-                            <span class="link-info">🎥 OBS<br>(read)</span>
-                            <span class="link-url">srt://${SERVER}:10001?streamid=play_${p.user}</span>
-                            <button class="copy-btn" onclick="copyText(this)">COPY</button>
-                        </div>
-                        <div class="link-row">
-                            <span class="link-info">📊 Stats /<br>API</span>
-                            <span class="link-url">http://stats.stealth.no/${p.user}</span>
-                            <button class="copy-btn" onclick="copyText(this)">COPY</button>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <button class="btn-delete" onclick="deletePath('${p.id}')">
-                        <i class="fas fa-trash-alt"></i>
+                    <button class="btn-action" onclick="toggleLog('${p.id}')">
+                        <i class="fas fa-terminal"></i> VIEW LOG
                     </button>
                 </td>
             </tr>
+            <tr id="log-row-${p.id}" class="log-container-row">
+                <td colspan="6" style="padding:0; border:none;">
+                    <div class="log-container" id="log-${p.id}">
+                        ${p.logs.map(l => `
+                            <div class="log-entry">
+                                <span class="log-time">[${l.time}]</span>
+                                <span class="log-msg ${l.type}">${l.msg}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </td>
+            </tr>
         `).join('');
-        updateSystemStats();
     }
 
-    function addPath() {
-        const name = prompt("Navn på ny streamer:");
-        if (name) {
-            paths.push({
-                id: Math.floor(Math.random() * 1000).toString(),
-                user: name.trim().replace(/\s+/g, '_'),
-                status: 'offline',
-                bitrate: '0.0',
-                viewers: 0
-            });
-            render();
-        }
+    function toggleLog(id) {
+        const log = document.getElementById(`log-${id}`);
+        const isVisible = log.style.display === 'block';
+        log.style.display = isVisible ? 'none' : 'block';
     }
 
-    function deletePath(id) {
-        if(confirm("Slette denne banen?")) {
-            paths = paths.filter(p => p.id !== id);
-            render();
-        }
-    }
+    // Simulering av "Hickups" i loggen
+    setInterval(() => {
+        paths.forEach(p => {
+            if (p.status === 'online' && Math.random() > 0.8) {
+                const now = new Date().toLocaleTimeString('nb-NO');
+                const issues = [
+                    { msg: 'Minor Packet Loss (0.2%)', type: 'warn' },
+                    { msg: 'Encoder Lag detected', type: 'error' },
+                    { msg: 'Path re-validated', type: 'info' },
+                    { msg: 'Bitrate drop: Signal interference', type: 'warn' }
+                ];
+                const pick = issues[Math.floor(Math.random() * issues.length)];
+                p.logs.unshift({ time: now, msg: pick.msg, type: pick.pick_type || pick.type });
+                if (p.logs.length > 8) p.logs.pop(); // Hold loggen kort
+                render();
+            }
+        });
+    }, 5000);
 
     function openPlayer(name) {
-        document.getElementById('modal-name').innerText = "LIVE: " + name;
+        document.getElementById('modal-name').innerText = "MONITOR: " + name;
         document.getElementById('player-modal').style.display = 'block';
         document.querySelector('.overlay').style.display = 'block';
-        setTimeout(() => { document.getElementById('player-text').innerText = "RECEIVING SRT DATA..."; }, 1000);
-        setTimeout(() => { document.getElementById('player-text').innerHTML = "<span style='color:var(--green)'>SIGNAL STABLE (1080p60)</span>"; }, 2500);
     }
 
     function closePlayer() {
         document.getElementById('player-modal').style.display = 'none';
         document.querySelector('.overlay').style.display = 'none';
-        document.getElementById('player-text').innerText = "CONNECTING...";
     }
 
-    function copyText(btn) {
-        const text = btn.parentElement.querySelector('.link-url').innerText;
-        navigator.clipboard.writeText(text);
-        const old = btn.innerText;
-        btn.innerText = "OK!";
-        btn.style.background = "var(--green)";
-        setTimeout(() => { btn.innerText = old; btn.style.background = ""; }, 1500);
+    function addPath() {
+        const name = prompt("Navn:");
+        if(name) {
+            paths.push({ id: Date.now().toString(), user: name, status: 'offline', bitrate: '0.0', viewers: 0, logs: [] });
+            render();
+        }
     }
 
     render();
